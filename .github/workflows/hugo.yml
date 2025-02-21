@@ -55,7 +55,7 @@ jobs:
           HUGO_ENVIRONMENT: production
           TZ: America/Los_Angeles
         run: |
-          pushd my-website |
+          pushd my-website | ls |
           hugo \
             --gc \
             --enableGitInfo \
