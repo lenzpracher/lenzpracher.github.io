@@ -1,1 +1,76 @@
-Hello World
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Your Name - Student GitHub Profile</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f0f0f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      flex-direction: column;
+    }
+    .profile-container {
+      text-align: center;
+      background: #fff;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      max-width: 400px;
+      width: 90%;
+    }
+    .profile-container img {
+      border-radius: 50%;
+      width: 150px;
+      height: 150px;
+    }
+    .profile-container h1 {
+      margin: 1rem 0 0.5rem;
+      font-size: 2em;
+    }
+    .profile-container p {
+      color: #666;
+      margin: 0.5rem 0;
+    }
+    .profile-container a {
+      text-decoration: none;
+      color: #0366d6;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="profile-container">
+    <img id="avatar" src="" alt="Profile Picture" />
+    <h1 id="name">Loading...</h1>
+    <p id="bio"></p>
+    <p>
+      <a id="profile-link" href="#" target="_blank">View on GitHub</a>
+    </p>
+  </div>
+  
+  <script>
+    // Set your GitHub username here
+    const username = 'your-github-username';
+    const apiUrl = `https://api.github.com/users/${username}`;
+  
+    fetch(apiUrl)
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById('avatar').src = data.avatar_url;
+        document.getElementById('name').textContent = data.name || data.login;
+        document.getElementById('bio').textContent = data.bio || 'Student passionate about coding!';
+        document.getElementById('profile-link').href = data.html_url;
+      })
+      .catch(err => {
+        console.error('Error fetching GitHub profile:', err);
+        document.getElementById('name').textContent = 'Error loading profile';
+      });
+  </script>
+</body>
+</html>
