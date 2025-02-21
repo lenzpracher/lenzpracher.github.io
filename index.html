@@ -1,76 +1,201 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Your Name - Student GitHub Profile</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Your Name - Student Portfolio</title>
+  <meta name="description" content="Your Name's personal homepage.">
+  <link rel="canonical" href="https://yourdomain.com/">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
   <style>
-    body {
-      font-family: Arial, sans-serif;
+    /* Reset and Base Styles */
+    body, h1, h2, h3, p, ul, li, a {
       margin: 0;
-      background: #f0f0f0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      flex-direction: column;
+      padding: 0;
+      list-style: none;
+      text-decoration: none;
+      color: inherit;
     }
-    .profile-container {
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+      color: #333;
+      line-height: 1.6;
+      padding: 20px;
+    }
+    header {
+      margin-bottom: 2rem;
       text-align: center;
+    }
+    nav ul.menu {
+      display: inline-flex;
+      gap: 1rem;
+      justify-content: center;
+    }
+    nav ul.menu li a {
+      font-weight: 600;
+      color: #0366d6;
+      transition: color 0.3s ease;
+    }
+    nav ul.menu li a:hover {
+      color: #024e9d;
+    }
+    main {
+      max-width: 800px;
+      margin: 0 auto;
       background: #fff;
       padding: 2rem;
-      border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-      max-width: 400px;
-      width: 90%;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
-    .profile-container img {
+    h1 {
+      text-align: center;
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+    .profile-pic {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    .profile-pic img {
       border-radius: 50%;
-      width: 150px;
-      height: 150px;
+      width: 200px;
+      height: 200px;
+      object-fit: cover;
+      border: 4px solid #0366d6;
+      transition: transform 0.3s ease;
     }
-    .profile-container h1 {
-      margin: 1rem 0 0.5rem;
-      font-size: 2em;
+    .profile-pic img:hover {
+      transform: scale(1.05);
     }
-    .profile-container p {
-      color: #666;
-      margin: 0.5rem 0;
+    p {
+      margin-bottom: 1rem;
+      font-size: 1.1rem;
     }
-    .profile-container a {
-      text-decoration: none;
+    p a {
       color: #0366d6;
-      font-weight: bold;
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+    p a:hover {
+      color: #024e9d;
+    }
+    .centered {
+      text-align: center;
+      margin: 1.5rem 0;
+    }
+    .centered a {
+      margin: 0 0.5rem;
+      padding: 0.3rem 0.6rem;
+      border: 1px solid #0366d6;
+      border-radius: 4px;
+      transition: background 0.3s, color 0.3s;
+    }
+    .centered a:hover {
+      background: #0366d6;
+      color: #fff;
+    }
+    hr {
+      border: none;
+      height: 1px;
+      background: #e0e0e0;
+      margin: 2rem 0;
+    }
+    h2 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    h3 {
+      font-size: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    ul {
+      margin-left: 1.5rem;
+    }
+    ul li {
+      margin-bottom: 1rem;
+    }
+    footer {
+      text-align: center;
+      margin-top: 2rem;
+      font-size: 0.9rem;
+      color: #666;
+    }
+    @media (max-width: 600px) {
+      main {
+        padding: 1rem;
+      }
+      h1 {
+        font-size: 2rem;
+      }
+      .profile-pic img {
+        width: 150px;
+        height: 150px;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="profile-container">
-    <img id="avatar" src="" alt="Profile Picture" />
-    <h1 id="name">Loading...</h1>
-    <p id="bio"></p>
-    <p>
-      <a id="profile-link" href="#" target="_blank">View on GitHub</a>
-    </p>
-  </div>
-  
-  <script>
-    // Set your GitHub username here
-    const username = 'your-github-username';
-    const apiUrl = `https://api.github.com/users/${username}`;
-  
-    fetch(apiUrl)
-      .then(response => response.json())
-      .then(data => {
-        document.getElementById('avatar').src = data.avatar_url;
-        document.getElementById('name').textContent = data.name || data.login;
-        document.getElementById('bio').textContent = data.bio || 'Student passionate about coding!';
-        document.getElementById('profile-link').href = data.html_url;
-      })
-      .catch(err => {
-        console.error('Error fetching GitHub profile:', err);
-        document.getElementById('name').textContent = 'Error loading profile';
-      });
-  </script>
+  <header>
+    <nav>
+      <ul class="menu">
+        <li><a href="#about">About</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <!-- About Section -->
+    <section id="about">
+      <h1>Your Name</h1>
+      <div class="profile-pic">
+        <!-- Replace with your profile picture URL or GitHub dynamic fetch if desired -->
+        <img src="https://avatars.githubusercontent.com/u/181533472?v=4&size=64" alt="Your Profile Picture">
+      </div>
+      <p>
+        I am a student passionate about coding, design, and innovation. Currently studying [Your Field] at [Your University]. 
+        I enjoy working on projects that combine technology with creativity.
+      </p>
+      <div class="centered">
+        [<a href="https://twitter.com/yourusername" target="_blank" rel="noopener">twitter</a>] 
+        [<a href="https://github.com/yourusername" target="_blank" rel="noopener">github</a>] 
+        [<a href="https://linkedin.com/in/yourusername" target="_blank" rel="noopener">linkedin</a>]
+      </div>
+    </section>
+    <hr>
+    <!-- Projects Section -->
+    <section id="projects">
+      <h2>Projects</h2>
+      <ul>
+        <li>
+          <p>
+            <strong>Project Title 1</strong> – A brief description of the project. 
+            <a href="#" target="_blank" rel="noopener">[view project]</a>
+          </p>
+        </li>
+        <li>
+          <p>
+            <strong>Project Title 2</strong> – A brief description of another project. 
+            <a href="#" target="_blank" rel="noopener">[view project]</a>
+          </p>
+        </li>
+        <!-- Add more project items as needed -->
+      </ul>
+    </section>
+    <hr>
+    <!-- Contact Section -->
+    <section id="contact">
+      <h2>Contact</h2>
+      <p>
+        Feel free to reach out at <em>your.email@example.com</em>.
+      </p>
+    </section>
+  </main>
+  <footer>
+    <hr>
+    <p>&copy; Your Name</p>
+  </footer>
 </body>
 </html>
