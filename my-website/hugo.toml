@@ -1,0 +1,4 @@
+baseURL = 'https://lenzpracher.github.io'
+languageCode = 'en-us'
+title = 'Lenzs Very Cool Website'
+theme = "mytheme"

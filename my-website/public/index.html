@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta name="generator" content="Hugo 0.144.2">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Lenz's Very Cool Website</title>
+  <meta name="description" content="My home page with some research projects">
+  <link rel="canonical" href="https://lenzpracher.github.io">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+     
+    body, h1, h2, h3, p, ul, li, a {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      text-decoration: none;
+      color: inherit;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+      color: #333;
+      line-height: 1.6;
+      padding: 20px;
+    }
+    header {
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+    nav ul.menu {
+      display: inline-flex;
+      gap: 1rem;
+      justify-content: center;
+    }
+    nav ul.menu li a {
+      font-weight: 600;
+      color: #0366d6;
+      transition: color 0.3s ease;
+    }
+    nav ul.menu li a:hover {
+      color: #024e9d;
+    }
+    main {
+      max-width: 800px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      text-align: center;
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+    .profile-pic {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    .profile-pic img {
+      border-radius: 50%;
+      width: 200px;
+      height: 200px;
+      object-fit: cover;
+      border: 4px solid #0366d6;
+      transition: transform 0.3s ease;
+    }
+    .profile-pic img:hover {
+      transform: scale(1.05);
+    }
+    p {
+      margin-bottom: 1rem;
+      font-size: 1.1rem;
+    }
+    p a {
+      color: #0366d6;
+      font-weight: 600;
+      transition: color 0.3s ease;
+    }
+    p a:hover {
+      color: #024e9d;
+    }
+    .centered {
+      text-align: center;
+      margin: 1.5rem 0;
+    }
+    .centered a {
+      margin: 0 0.5rem;
+      padding: 0.3rem 0.6rem;
+      border: 1px solid #0366d6;
+      border-radius: 4px;
+      transition: background 0.3s, color 0.3s;
+    }
+    .centered a:hover {
+      background: #0366d6;
+      color: #fff;
+    }
+    hr {
+      border: none;
+      height: 1px;
+      background: #e0e0e0;
+      margin: 2rem 0;
+    }
+    h2 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    h3 {
+      font-size: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    ul {
+      margin-left: 1.5rem;
+    }
+    ul li {
+      margin-bottom: 1rem;
+    }
+    footer {
+      text-align: center;
+      margin-top: 2rem;
+      font-size: 0.9rem;
+      color: #666;
+    }
+    @media (max-width: 600px) {
+      main {
+        padding: 1rem;
+      }
+      h1 {
+        font-size: 2rem;
+      }
+      .profile-pic img {
+        width: 150px;
+        height: 150px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <ul class="menu">
+        <li><a href="#about">About</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    
+    <section id="about">
+      <h1>Lenz Pracher</h1>
+      <div class="profile-pic">
+        
+        <img src="https://avatars.githubusercontent.com/u/181533472?v=4" alt="My Profile Picture">
+      </div>
+      <p>
+        Hi! I am a student working on Evolutionary Game Theory and Machine Learning inspired approaches to Physics Problems. I also really like Differential Geometry and am learning Algebraic Geometry. 
+      </p>
+      <div class="centered">
+        [<a href="https://github.com/lenzpracher" target="_blank" rel="noopener">github</a>] 
+        [<a href="https://www.linkedin.com/in/lenz-pracher-4aa038279/" target="_blank" rel="noopener">linkedin</a>]
+      </div>
+    </section>
+    <hr>
+    
+    <section id="projects">
+      <h2>Projects</h2>
+      <ul>
+        <li>
+          <p>
+              <strong>Supernash</strong> Some classification methods for Nash Equilibria in Memory 1 Repeated Games.
+              <a href="/project1" target="/project1" rel="noopener">[view project]</a><br>
+              <i>Collaborators: Philip LaPorte, Saptarshi Pal</i>
+          </p>
+        </li>
+        <li>
+          <p>
+            <strong>High Selection Evolution Stuff</strong> High Selection Strength yields nice Limits.
+            <a href="/project2" target="/project2" rel="noopener">[view project]</a>
+            <i>Collaborators: Wang, Shiyi </i>
+          </p>
+        </li>
+        
+      </ul>
+    </section>
+    <hr>
+    
+    <section id="contact">
+      <h2>Contact</h2>
+      <p>
+        Feel free to reach out at <em>"lenz" + "." + "pracher@gmail.com"</em>.
+      </p>
+    </section>
+  </main>
+  <footer>
+    <hr>
+    <p>&copy; Lenz Pracher</p>
+  </footer>
+</body>
+</html>
