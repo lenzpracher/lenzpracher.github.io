@@ -55,12 +55,9 @@ jobs:
           HUGO_ENVIRONMENT: production
           TZ: America/Los_Angeles
         run: |
-          pushd my-website | ls |
-          hugo \
-            --gc \
-            --enableGitInfo \
-            --minify \
-            --baseURL "${{ steps.pages.outputs.base_url }}/"
+          pushd my-website
+          hugo --gc --enableGitInfo --minify --baseURL "${{ steps.pages.outputs.base_url }}/"
+          popd
       
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
