@@ -62,7 +62,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .my-website/public
+          path: ./my-website/public
 
   # Deployment job
   deploy:
