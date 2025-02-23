@@ -1,0 +1,17 @@
+[project]
+authors = ["Virt0x <lenz.pracher@gmail.com>"]
+channels = ["conda-forge"]
+description = "Add a short description here"
+name = "lenzpracher.github.io"
+platforms = ["osx-arm64"]
+version = "0.1.0"
+
+[tasks]
+
+[dependencies]
+python = ">=3.13.2,<3.14"
+plotly = ">=6.0.0,<7"
+numpy = ">=2.2.3,<3"
+ipykernel = ">=6.29.5,<7"
+pandas = ">=2.2.3,<3"
+hugo = ">=0.144.2,<0.145"

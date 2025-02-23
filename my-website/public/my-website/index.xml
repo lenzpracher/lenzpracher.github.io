@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>My-Websites on Lenzs Very Cool Website</title>
+    <link>http://localhost:1313/my-website/</link>
+    <description>Recent content in My-Websites on Lenzs Very Cool Website</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 21 Feb 2025 18:04:51 +0100</lastBuildDate>
+    <atom:link href="http://localhost:1313/my-website/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Supernash</title>
+      <link>http://localhost:1313/my-website/content/page/supernash/</link>
+      <pubDate>Fri, 21 Feb 2025 18:04:51 +0100</pubDate>
+      <guid>http://localhost:1313/my-website/content/page/supernash/</guid>
+      <description>&lt;h1 id=&#34;hello-world&#34;&gt;Hello World&lt;/h1&gt;&#xA;&lt;p&gt;Hello World &lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
