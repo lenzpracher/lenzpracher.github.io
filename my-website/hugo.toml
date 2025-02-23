@@ -2,3 +2,7 @@ baseURL = 'https://lenzpracher.github.io'
 languageCode = 'en-us'
 title = 'Lenzs Very Cool Website'
 theme = "mytheme"
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true

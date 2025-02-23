@@ -13,7 +13,7 @@
       <link>http://localhost:1313/projects/supernash/</link>
       <pubDate>Sun, 23 Feb 2025 13:34:46 +0100</pubDate>
       <guid>http://localhost:1313/projects/supernash/</guid>
-      <description>&lt;p&gt;##Introduction&lt;/p&gt;&#xA;&lt;p&gt;This is a &lt;em&gt;Test&lt;/em&gt;&lt;/p&gt;</description>
+      <description>&lt;h1 id=&#34;my-plotly-plot&#34;&gt;My Plotly Plot&lt;/h1&gt;&#xA;&lt;p&gt;Here’s an interactive plot:&lt;/p&gt;&#xA;&lt;iframe src=&#34;http://localhost:1313/simplex.html&#34; width=&#34;800&#34; height=&#34;800&#34; frameborder=&#34;0&#34;&gt;&lt;/iframe&gt;</description>
     </item>
     <item>
       <title>Post 3</title>

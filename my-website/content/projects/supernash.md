@@ -6,6 +6,8 @@ slug = 'supernash'
 +++
 
 
-##Introduction
+# My Plotly Plot
 
-This is a *Test*
+Here’s an interactive plot:
+
+<iframe src="/simplex.html" width="800" height="800" frameborder="0"></iframe>
