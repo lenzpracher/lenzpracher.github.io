@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Projects on Lenzs Very Cool Website</title>
+    <title>Projects on Lenzs Website</title>
     <link>http://localhost:1313/projects/</link>
-    <description>Recent content in Projects on Lenzs Very Cool Website</description>
+    <description>Recent content in Projects on Lenzs Website</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 23 Feb 2025 13:34:46 +0100</lastBuildDate>
@@ -13,7 +13,7 @@
       <link>http://localhost:1313/projects/supernash/</link>
       <pubDate>Sun, 23 Feb 2025 13:34:46 +0100</pubDate>
       <guid>http://localhost:1313/projects/supernash/</guid>
-      <description>&lt;h1 id=&#34;my-plotly-plot&#34;&gt;My Plotly Plot&lt;/h1&gt;&#xA;&lt;p&gt;Here’s an interactive plot:&lt;/p&gt;&#xA;&lt;iframe src=&#34;http://localhost:1313/iris_plot.html&#34; width=&#34;800&#34; height=&#34;800&#34; frameborder=&#34;0&#34;&gt;&lt;/iframe&gt;</description>
+      <description>&lt;h1 id=&#34;supernash-project&#34;&gt;Supernash Project&lt;/h1&gt;&#xA;&lt;h2 id=&#34;introduction&#34;&gt;Introduction&lt;/h2&gt;&#xA;&lt;p&gt;We consider the infinitely repeated game. In each round, players can choose either to &lt;strong&gt;cooperate&lt;/strong&gt; or &lt;strong&gt;defect&lt;/strong&gt;. A strategy belongs to the Memory 1 space if it conditions its next move solely on the previous round. In our case, the strategy is parameterized by four probabilities representing the outcomes of the last round:&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;{CC, CD, DC, DD}&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;p&gt;where the first character is the move of the first player and the second is that of the second player. These probabilities form the strategy &lt;strong&gt;{p&lt;sub&gt;CC&lt;/sub&gt;, p&lt;sub&gt;CD&lt;/sub&gt;, p&lt;sub&gt;DC&lt;/sub&gt;, p&lt;sub&gt;DD&lt;/sub&gt;}&lt;/strong&gt;.&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

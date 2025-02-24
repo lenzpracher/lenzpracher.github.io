@@ -12,6 +12,7 @@
         padding: 2rem;
         background-color: #fff;
         color: #333;
+        line-height: 1.6;
         transition: background-color 0.3s, color 0.3s;
       }
        
@@ -23,7 +24,7 @@
       main {
         max-width: 800px;
         margin: 0 auto;
-        text-align: center;
+        text-align: left;
       }
        
       header {
@@ -58,6 +59,39 @@
       .dark-mode button.toggle-dark-mode svg {
         filter: invert(1);
       }
+       
+      h1, h2, h3, h4, h5, h6 {
+        font-family: 'Georgia', serif;
+        color: #222;
+        margin-top: 1.5rem;
+        margin-bottom: 1rem;
+      }
+      .dark-mode h1,
+      .dark-mode h2,
+      .dark-mode h3,
+      .dark-mode h4,
+      .dark-mode h5,
+      .dark-mode h6 {
+        color: #f0f0f0;
+      }
+       
+      p {
+        margin-bottom: 1rem;
+      }
+       
+      iframe {
+        border: none;
+        border-radius: 8px;
+        margin-top: 1.5rem;
+      }
+       
+      a {
+        color: #0066cc;
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
     </style>
   </head>
   <body>
@@ -66,7 +100,6 @@
       <div id="current-time"></div>
       
       <button class="toggle-dark-mode" onclick="toggleDarkMode()">
-        
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
           <path d="M21.752 15.002A9 9 0 1 1 12 3a7.5 7.5 0 0 0 9.752 12.002z"/>
         </svg>

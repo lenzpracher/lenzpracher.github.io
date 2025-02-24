@@ -4,28 +4,45 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ .Title }}</title>
+    <!-- Import Google Fonts for a modern look -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
+      :root {
+        --primary-color: #333;
+        --secondary-color: #555;
+        --accent-color: #0066cc;
+        --background-color: #fff;
+        --text-color: #333;
+        --border-color: #e0e0e0;
+        --heading-border: #ddd;
+      }
       /* Base styles */
       body {
-        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        font-family: 'Inter', sans-serif;
         margin: 0;
         padding: 2rem;
-        background-color: #fff;
-        color: #333;
+        background-color: var(--background-color);
+        color: var(--text-color);
         transition: background-color 0.3s, color 0.3s;
       }
       /* Dark mode styles */
       .dark-mode {
-        background-color: #121212;
-        color: #e0e0e0;
+        --background-color: #121212;
+        --text-color: #e0e0e0;
+        --border-color: #333;
+        --heading-border: #444;
+        background-color: var(--background-color);
+        color: var(--text-color);
       }
-      /* Center markdown content */
+      /* Main content container */
       main {
         max-width: 800px;
         margin: 0 auto;
-        text-align: center;
+        text-align: left;
       }
-      /* Header styling with relative positioning */
+      /* Header styling */
       header {
         position: relative;
         margin-bottom: 2rem;
@@ -35,7 +52,7 @@
         font-size: 0.9rem;
         margin-top: 0.5rem;
       }
-      /* Minimal dark mode toggle button styling, positioned at top right */
+      /* Dark mode toggle button styling */
       button.toggle-dark-mode {
         position: absolute;
         top: 10px;
@@ -51,12 +68,59 @@
       button.toggle-dark-mode svg {
         width: 32px;
         height: 32px;
-        fill: currentColor;
+        fill: var(--text-color);
         transition: filter 0.3s;
       }
-      /* Invert the button icon color when dark mode is active */
       .dark-mode button.toggle-dark-mode svg {
         filter: invert(1);
+      }
+      /* Headings with clear section separation */
+      h1 {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+      }
+      h2, h3, h4, h5, h6 {
+        font-size: 1.75rem;
+        margin-top: 2rem;
+        margin-bottom: 0.5rem;
+        padding-bottom: 0.3rem;
+        border-bottom: 2px solid var(--heading-border);
+      }
+      /* Paragraphs */
+      p {
+        margin-bottom: 1.5rem;
+        line-height: 1.8;
+      }
+      /* Iframe styling */
+      iframe {
+        width: 100%;
+        max-width: 800px;
+        border: none;
+        border-radius: 8px;
+        margin: 2rem 0;
+      }
+      /* Links */
+      a {
+        color: var(--accent-color);
+        text-decoration: none;
+        transition: color 0.3s;
+      }
+      a:hover {
+        text-decoration: underline;
+        color: var(--secondary-color);
+      }
+      /* Blockquote for additional emphasis */
+      blockquote {
+        margin: 1.5rem 0;
+        padding-left: 1rem;
+        border-left: 4px solid var(--border-color);
+        color: var(--secondary-color);
+      }
+      /* Responsive adjustments */
+      @media (max-width: 600px) {
+        body {
+          padding: 1rem;
+        }
       }
     </style>
   </head>
@@ -64,16 +128,15 @@
     <header>
       <!-- Current time display -->
       <div id="current-time"></div>
-      <!-- Minimal dark mode toggle button with an icon -->
+      <!-- Dark mode toggle button -->
       <button class="toggle-dark-mode" onclick="toggleDarkMode()">
-        <!-- Inline SVG moon icon -->
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
           <path d="M21.752 15.002A9 9 0 1 1 12 3a7.5 7.5 0 0 0 9.752 12.002z"/>
         </svg>
       </button>
     </header>
     <main>
-      <!-- Render your markdown content -->
+      <!-- Rendered markdown content -->
       {{ .Content }}
     </main>
     <script>
@@ -90,7 +153,7 @@
         document.body.classList.toggle('dark-mode');
       }
 
-      // Optionally, enable dark mode based on system preference on load
+      // Enable dark mode based on system preference on load
       if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
         document.body.classList.add('dark-mode');
       }
