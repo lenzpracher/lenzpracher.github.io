@@ -1,0 +1,11 @@
+<div style="display: flex; align-items: center; gap: 20px;">
+  <h1 style="margin: 0;">{{ site.Title }}</h1>
+  <a href="https://ssh.alderan.dev/?hostname=127.0.0.1&port=22&username=lenz" 
+     style="color: #6b7280; text-decoration: none; padding: 8px 16px; border: 1px solid #6b7280; border-radius: 6px; font-size: 14px; transition: all 0.2s ease;"
+     onmouseover="this.style.backgroundColor='#6b7280'; this.style.color='white';"
+     onmouseout="this.style.backgroundColor='transparent'; this.style.color='#6b7280';"
+     target="_blank">
+    Alderan
+  </a>
+</div>
+{{ partial "menu.html" (dict "menuID" "main" "page" .) }}

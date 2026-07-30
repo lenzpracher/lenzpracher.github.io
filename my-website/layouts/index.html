@@ -1,0 +1,1292 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Lenz's Website</title>
+  <meta name="description" content="My home page with some research projects">
+  <meta name="google-site-verification" content="qZ-VTE8HBwsQ-QZQJi5hnHGlhX3P0MfG86Y-Cv6jExM" />
+  <link rel="canonical" href="https://lenzpracher.github.io">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    /* Reset and Base Styles */
+    body, h1, h2, h3, p, ul, li, a {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      text-decoration: none;
+      color: inherit;
+    }
+    body {
+      font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+      background: #1a1a1a;
+      color: #e0e0e0;
+      line-height: 1.5;
+      padding: 0;
+      margin: 0;
+      position: relative;
+      overflow-x: hidden;
+    }
+    
+    /* Interactive background canvas */
+    #nematic-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+      pointer-events: none;
+    }
+    /* Modern terminal styling */
+    .terminal {
+      background: rgba(30, 30, 30, 0.85);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      margin: 40px;
+      padding: 30px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      position: relative;
+      z-index: 2;
+      max-width: 800px;
+      margin: 40px auto;
+    }
+    
+    .terminal-header {
+      color: #888;
+      border-bottom: 1px solid #404040;
+      padding-bottom: 15px;
+      margin-bottom: 30px;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+    }
+    
+    .terminal-header::before {
+      content: '';
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #ff5f56;
+      margin-right: 60px;
+      box-shadow: 18px 0 0 #ffbd2e, 36px 0 0 #27ca3f;
+      cursor: pointer;
+      transition: all 0.1s ease;
+    }
+    
+    .terminal-header.button-feedback::before {
+      transform: scale(0.95);
+    }
+    
+    
+    nav {
+      text-align: left;
+      margin-bottom: 30px;
+    }
+    
+    nav ul.menu {
+      display: block;
+      margin: 0;
+      padding: 0;
+    }
+    
+    nav ul.menu li {
+      display: inline;
+      margin-right: 30px;
+    }
+    
+    nav ul.menu li a {
+      color: #6eb5ff;
+      text-decoration: none;
+      font-weight: normal;
+      transition: all 0.3s ease;
+      padding: 5px 10px;
+      border-radius: 4px;
+    }
+    
+    nav ul.menu li a:hover {
+      color: #ffffff;
+      background: rgba(110, 181, 255, 0.1);
+    }
+    
+    nav ul.menu li a:before {
+      content: '';
+      color: #888;
+    }
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      color: #ffffff;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+    
+    .profile-pic {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+    
+    .profile-pic img {
+      width: 100px;
+      height: 100px;
+      border: 2px solid #6eb5ff;
+      border-radius: 8px;
+      filter: brightness(0.9);
+    }
+    
+    p {
+      margin-bottom: 15px;
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+    
+    p a {
+      color: #ffffff;
+      text-decoration: underline;
+      transition: all 0.3s ease;
+    }
+    
+    p a:hover {
+      color: #6eb5ff;
+      text-shadow: 0 0 5px #6eb5ff;
+    }
+    
+    .prompt {
+      color: #00ff41;
+      margin-right: 10px;
+    }
+    
+    .prompt:before {
+      content: '';
+      color: #888;
+    }
+    .centered {
+      margin: 20px 0;
+    }
+    
+    .centered a {
+      margin-right: 15px;
+      color: #6eb5ff;
+      text-decoration: none;
+      padding: 8px 16px;
+      border: 1px solid #404040;
+      border-radius: 6px;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
+    }
+    
+    .centered a:hover {
+      background: rgba(110, 181, 255, 0.1);
+      border-color: #6eb5ff;
+      color: #ffffff;
+    }
+    
+    hr {
+      border: none;
+      height: 1px;
+      background: #404040;
+      margin: 40px 0;
+    }
+    
+    h2 {
+      font-size: 1.3rem;
+      margin-bottom: 25px;
+      color: #ffffff;
+      font-weight: 600;
+    }
+    
+    ul {
+      margin-left: 0;
+      list-style: none;
+    }
+    
+    ul li {
+      margin-bottom: 20px;
+      padding-left: 0px;
+      position: relative;
+    }
+    
+    ul li:before {
+      content: '';
+      position: absolute;
+      left: 0;
+    }
+    
+    strong {
+      color: #ffffff;
+      font-weight: 600;
+    }
+    footer {
+      text-align: center;
+      margin-top: 2rem;
+      font-size: 0.9rem;
+      color: #666;
+    }
+    @media (max-width: 600px) {
+      .terminal {
+        margin: 20px;
+        padding: 20px;
+      }
+      
+      .terminal-header::before {
+        width: 8px;
+        height: 8px;
+        margin-right: 40px;
+        box-shadow: 12px 0 0 #ffbd2e, 24px 0 0 #27ca3f;
+      }
+      
+      main {
+        padding: 1rem;
+      }
+      h1 {
+        font-size: 2rem;
+      }
+      .profile-pic img {
+        width: 150px;
+        height: 150px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="nematic-canvas"></canvas>
+  
+  <div class="terminal" id="info-card">
+    <div class="terminal-header">
+      <span style="color: #888; display: flex; align-items: center; gap: 15px;">
+        LENZ PRACHER
+        <a href="https://ssh.alderan.dev/" 
+           style="color: #6b7280; text-decoration: none; padding: 4px 12px; border: 1px solid #6b7280; border-radius: 4px; font-size: 12px; transition: all 0.2s ease; background: transparent;"
+           onmouseover="this.style.backgroundColor='#6b7280'; this.style.color='#1a1a1a';"
+           onmouseout="this.style.backgroundColor='transparent'; this.style.color='#6b7280';"
+           target="_blank">
+          Alderan
+        </a>
+      </span>
+      <span style="margin-left: auto; color: #888;"><span id="fish-stats">INITIALIZING...</span></span>
+    </div>
+    
+    
+    
+    <section id="about">
+      <div class="prompt"></div>
+      <h1>Lenz Pracher</h1>
+      
+      <div class="profile-pic">
+        <img src="https://avatars.githubusercontent.com/u/181533472?v=4" alt="Profile">
+      </div>
+      
+      <p>Incoming <a href="https://appliedphysics.stanford.edu/" target="_blank">Stanford Physics</a> PhD Student supported by the Stanford Graduate Fellowship. I'm grateful to be advised by <a href="https://ganguli-gang.stanford.edu/surya.html" target="_blank">Surya Ganguli</a>. <a href="https://www.theorie.physik.uni-muenchen.de/TMP/" target="_blank">M.Sc. Theoretical and Mathematical Physics</a> at TUM/LMU currently focussing on <a href="https://www.physicsoflearning.org/" target="_blank">Physics of (Machine) Learning</a> in the <a href="https://www.theorie.physik.uni-muenchen.de/lsfrey/group_rulands/index.html" target="_blank">Rulands Group</a>. I have worked at <a href="https://www.quantco.com/" target="_blank">Quantco</a> as a working student and intern and have held positions as visiting researcher at the <a href="https://www.math.harvard.edu/" target="_blank">Harvard University Mathematics</a> and the <a href="https://sail.ist.hokudai.ac.jp/en/publications/papers.html" target="_blank">Hokkaido University Information Science and Technology Department</a>. I have obtained my <a href="https://www.tum.de/en/studies/degree-programs/detail/physics-bachelor-of-science-bsc" target="_blank">B.Sc. in Physics</a> at TUM.</p>
+      
+      <div class="centered">
+        <a href="https://github.com/lenzpracher" target="_blank">github</a>
+        <a href="https://www.linkedin.com/in/lenz-pracher-4aa038279/" target="_blank">linkedin</a>
+        <a href="https://scholar.google.com/citations?user=_4qxtb0AAAAJ&hl=en" target="_blank">google scholar</a>
+      </div>
+    </section>
+    
+    <hr>
+    
+    <section id="projects">
+      <h2>Projects</h2>
+      <ul>
+        <li>
+          <p>
+            <a href="/projects/grokking/"><strong>A Spectral Theory of Grokking</strong></a><br>
+            Weight Decay induces Grokking through Evolution of the Neural Tangent Kernel.<br>
+            <span style="color: #666;">L Pracher, P de Jong, O Liesaus, A Jeffares, S Rulands &mdash; Research Note &mdash; 2026</span>
+          </p>
+        </li>
+        <li>
+          <p>
+            <a href="https://academic.oup.com/pnasnexus/article/5/2/pgag005/8425146" target="_blank"><strong>From simultaneous to leader–follower play in direct reciprocity</strong></a><br>
+            Foreknowledge can be very useful to finding good strategies.<br>
+            <span style="color: #666;">P LaPorte, L Pracher, S Pal &mdash; PNAS Nexus 5 (2), pgag005 &mdash; 2026</span>
+          </p>
+        </li>
+        <li>
+          <p>
+            <a href="https://arxiv.org/pdf/2601.09849" target="_blank"><strong>Strategies of cooperation and defection in five large language models</strong></a><br>
+            LLMs have certain strategic preferences.<br>
+            <span style="color: #666;">S Pal, A Mallela, C Hilbe, L Pracher, C Wei, F Fu, S Schnell, MA Nowak &mdash; arXiv:2601.09849 &mdash; 2026</span>
+          </p>
+        </li>
+        <li>
+          <p>
+            <a href="https://openreview.net/pdf?id=LpIu0Zx5yh" target="_blank"><strong>LOCO: Abstracting Spectral Numerical Integrators for PDEs into Neural Operators</strong></a><br>
+            We can gain some performance by adjusting the Fourier Neural Operator.<br>
+            <span style="color: #666;">L Pracher, T Matsubara</span>
+          </p>
+        </li>
+        <li>
+          <p>
+            <a href="https://www.researchsquare.com/article/rs-7511472/v1" target="_blank"><strong>Evolutionary processes that resolve cooperative dilemmas</strong></a><br>
+            Simple update rules can yield surprising behaviour.<br>
+            <span style="color: #666;">P LaPorte, S Wang, L Pracher, S Pal, M Nowak &mdash; 2025</span>
+          </p>
+        </li>
+      </ul>
+    </section>
+    
+    <hr>
+    
+    <section id="contact">
+      <h2>Contact</h2>
+      <p><strong>Email:</strong> lenz.pracher"at"gmail.com</p>
+    </section>
+  </div>
+  <footer id="footer">
+    <hr>
+    <p>&copy; Lenz Pracher | <a href="/impressum" style="color: #666; text-decoration: underline;">Impressum</a></p>
+  </footer>
+
+  <script>
+    // Fish Flocking Simulation
+    class Fish {
+      constructor(x, y, type = 'follower') {
+        this.x = x;
+        this.y = y;
+        this.vx = (Math.random() - 0.5) * 2;
+        this.vy = (Math.random() - 0.5) * 2;
+        this.angle = Math.atan2(this.vy, this.vx);
+        this.type = type; // 'leader', 'follower', or 'predator'
+        this.trail = []; // Store previous positions for trajectory
+        this.maxTrailLength = 480; // Number of trail points to keep
+        
+        if (this.type === 'predator') {
+          this.size = 8; // Fixed larger size
+          this.maxSpeed = 1.2; // Slower, more gentle movement
+          this.maxForce = 0.03; // Slightly higher for more natural turning
+          this.separationRadius = 40;
+          this.alignmentRadius = 80;
+          this.cohesionRadius = 80;
+          this.predatorRadius = 150; // Increased avoidance distance
+          this.opacity = 0.8; // Fixed opacity for consistency
+          this.color = { r: 255, g: 140, b: 0 }; // Dark orange
+          this.wanderAngle = Math.random() * Math.PI * 2; // For wandering behavior
+        } else if (this.type === 'leader') {
+          this.size = Math.random() * 2 + 3;
+          this.maxSpeed = 1.8;
+          this.maxForce = 0.04;
+          this.separationRadius = 30;
+          this.alignmentRadius = 60;
+          this.cohesionRadius = 60;
+          this.predatorAvoidRadius = 140; // Increased avoidance distance
+          this.opacity = Math.random() * 0.4 + 0.6;
+          this.color = { r: 255, g: 165, b: 0 }; // Orange
+        } else {
+          this.size = Math.random() * 2 + 1.5;
+          this.maxSpeed = 1.3;
+          this.maxForce = 0.025;
+          this.separationRadius = 30; // Increased from 20
+          this.alignmentRadius = 40;
+          this.cohesionRadius = 40;
+          this.leaderSeekRadius = 80;
+          this.predatorAvoidRadius = 160; // Increased avoidance distance
+          this.opacity = Math.random() * 0.3 + 0.3;
+          this.color = { r: 120, g: 120, b: 120 }; // Grey
+        }
+      }
+      
+      update(fishes, mouseX, mouseY) {
+        // Cache nearby fish to avoid recalculating distances
+        const nearbyFish = [];
+        const maxInteractionRadius = Math.max(this.separationRadius || 30, this.alignmentRadius || 40, this.cohesionRadius || 40, this.predatorAvoidRadius || 160);
+        
+        for (let fish of fishes) {
+          if (fish !== this) {
+            const dx = this.x - fish.x;
+            const dy = this.y - fish.y;
+            const distanceSquared = dx * dx + dy * dy;
+            const distance = Math.sqrt(distanceSquared);
+            
+            if (distance < maxInteractionRadius) {
+              nearbyFish.push({ fish, distance, dx, dy });
+            }
+          }
+        }
+        
+        // Flocking behaviors using cached nearby fish
+        const separation = this.separateOptimized(nearbyFish);
+        const alignment = this.alignOptimized(nearbyFish);
+        const cohesion = this.cohesionOptimized(nearbyFish);
+        const mouseForce = this.seekMouse(mouseX, mouseY);
+        const predatorAvoid = this.avoidPredatorsOptimized(nearbyFish);
+        
+        if (this.type === 'predator') {
+          // Predators wander naturally with some randomness
+          const wanderForce = this.wander();
+          separation.x *= 0.8; separation.y *= 0.8;
+          alignment.x *= 0.2; alignment.y *= 0.2; // Less alignment for more natural movement
+          cohesion.x *= 0.2; cohesion.y *= 0.2; // Less cohesion for more independent movement
+          mouseForce.x *= 0.3; mouseForce.y *= 0.3; // Less responsive to mouse
+          
+          this.applyForce(wanderForce);
+        } else if (this.type === 'leader') {
+          // Leaders are more independent and responsive to mouse but avoid predators
+          separation.x *= 1.8; separation.y *= 1.8;
+          alignment.x *= 0.8; alignment.y *= 0.8;
+          cohesion.x *= 0.8; cohesion.y *= 0.8;
+          mouseForce.x *= 1.2; mouseForce.y *= 1.2;
+          predatorAvoid.x *= 2.5; predatorAvoid.y *= 2.5;
+          
+          this.applyForce(predatorAvoid);
+        } else {
+          // Followers seek leaders and follow more closely, strongly avoid predators
+          const leaderSeek = this.seekLeadersOptimized(nearbyFish);
+          separation.x *= 2.0; separation.y *= 2.0;
+          alignment.x *= 1.0; alignment.y *= 1.0;
+          cohesion.x *= 1.0; cohesion.y *= 1.0;
+          mouseForce.x *= 0.5; mouseForce.y *= 0.5;
+          leaderSeek.x *= 1.2; leaderSeek.y *= 1.2;
+          predatorAvoid.x *= 3.0; predatorAvoid.y *= 3.0;
+          
+          this.applyForce(leaderSeek);
+          this.applyForce(predatorAvoid);
+        }
+        
+        // Apply forces
+        this.applyForce(separation);
+        this.applyForce(alignment);
+        this.applyForce(cohesion);
+        this.applyForce(mouseForce);
+        
+        // Update velocity and position
+        this.vx = Math.max(-this.maxSpeed, Math.min(this.maxSpeed, this.vx));
+        this.vy = Math.max(-this.maxSpeed, Math.min(this.maxSpeed, this.vy));
+        
+        this.x += this.vx;
+        this.y += this.vy;
+        
+        // Update trail with current position (only every 2nd frame for performance)
+        if (this.frameCount % 2 === 0) {
+          this.trail.push({ x: this.x, y: this.y });
+          if (this.trail.length > this.maxTrailLength) {
+            this.trail.shift();
+          }
+        }
+        this.frameCount = (this.frameCount || 0) + 1;
+        
+        this.angle = Math.atan2(this.vy, this.vx);
+        
+        // Wrap around edges
+        if (this.x < -10) this.x = window.innerWidth + 10;
+        if (this.x > window.innerWidth + 10) this.x = -10;
+        if (this.y < -10) this.y = window.innerHeight + 10;
+        if (this.y > window.innerHeight + 10) this.y = -10;
+      }
+      
+      applyForce(force) {
+        this.vx += force.x;
+        this.vy += force.y;
+      }
+      
+      separate(fishes) {
+        let steer = {x: 0, y: 0};
+        let count = 0;
+        
+        for (let fish of fishes) {
+          const d = this.distance(fish);
+          if (d > 0 && d < this.separationRadius) {
+            const diff = {
+              x: this.x - fish.x,
+              y: this.y - fish.y
+            };
+            const mag = Math.sqrt(diff.x * diff.x + diff.y * diff.y);
+            if (mag > 0) {
+              diff.x /= mag;
+              diff.y /= mag;
+              diff.x /= d; // Weight by distance
+              diff.y /= d;
+              steer.x += diff.x;
+              steer.y += diff.y;
+              count++;
+            }
+          }
+        }
+        
+        if (count > 0) {
+          steer.x /= count;
+          steer.y /= count;
+          const mag = Math.sqrt(steer.x * steer.x + steer.y * steer.y);
+          if (mag > 0) {
+            steer.x = (steer.x / mag) * this.maxSpeed - this.vx;
+            steer.y = (steer.y / mag) * this.maxSpeed - this.vy;
+            this.limit(steer, this.maxForce);
+          }
+        }
+        
+        return steer;
+      }
+      
+      align(fishes) {
+        let sum = {x: 0, y: 0};
+        let count = 0;
+        
+        for (let fish of fishes) {
+          const d = this.distance(fish);
+          if (d > 0 && d < this.alignmentRadius) {
+            sum.x += fish.vx;
+            sum.y += fish.vy;
+            count++;
+          }
+        }
+        
+        if (count > 0) {
+          sum.x /= count;
+          sum.y /= count;
+          const mag = Math.sqrt(sum.x * sum.x + sum.y * sum.y);
+          if (mag > 0) {
+            sum.x = (sum.x / mag) * this.maxSpeed;
+            sum.y = (sum.y / mag) * this.maxSpeed;
+            const steer = {
+              x: sum.x - this.vx,
+              y: sum.y - this.vy
+            };
+            this.limit(steer, this.maxForce);
+            return steer;
+          }
+        }
+        
+        return {x: 0, y: 0};
+      }
+      
+      separateOptimized(nearbyFish) {
+        let steer = {x: 0, y: 0};
+        let count = 0;
+        
+        for (let {fish, distance, dx, dy} of nearbyFish) {
+          if (distance < this.separationRadius) {
+            const mag = distance;
+            if (mag > 0) {
+              let diffX = dx / mag;
+              let diffY = dy / mag;
+              diffX /= distance; // Weight by distance
+              diffY /= distance;
+              steer.x += diffX;
+              steer.y += diffY;
+              count++;
+            }
+          }
+        }
+        
+        if (count > 0) {
+          steer.x /= count;
+          steer.y /= count;
+          const mag = Math.sqrt(steer.x * steer.x + steer.y * steer.y);
+          if (mag > 0) {
+            steer.x = (steer.x / mag) * this.maxSpeed - this.vx;
+            steer.y = (steer.y / mag) * this.maxSpeed - this.vy;
+            this.limit(steer, this.maxForce);
+          }
+        }
+        
+        return steer;
+      }
+      
+      alignOptimized(nearbyFish) {
+        let sum = {x: 0, y: 0};
+        let count = 0;
+        
+        for (let {fish, distance} of nearbyFish) {
+          if (distance < this.alignmentRadius) {
+            sum.x += fish.vx;
+            sum.y += fish.vy;
+            count++;
+          }
+        }
+        
+        if (count > 0) {
+          sum.x /= count;
+          sum.y /= count;
+          const mag = Math.sqrt(sum.x * sum.x + sum.y * sum.y);
+          if (mag > 0) {
+            sum.x = (sum.x / mag) * this.maxSpeed;
+            sum.y = (sum.y / mag) * this.maxSpeed;
+            const steer = {
+              x: sum.x - this.vx,
+              y: sum.y - this.vy
+            };
+            this.limit(steer, this.maxForce);
+            return steer;
+          }
+        }
+        
+        return {x: 0, y: 0};
+      }
+      
+      cohesionOptimized(nearbyFish) {
+        let sum = {x: 0, y: 0};
+        let count = 0;
+        
+        for (let {fish, distance} of nearbyFish) {
+          if (distance < this.cohesionRadius) {
+            sum.x += fish.x;
+            sum.y += fish.y;
+            count++;
+          }
+        }
+        
+        if (count > 0) {
+          sum.x /= count;
+          sum.y /= count;
+          return this.seek(sum.x, sum.y);
+        }
+        
+        return {x: 0, y: 0};
+      }
+      
+      avoidPredatorsOptimized(nearbyFish) {
+        if (this.type === 'predator') return {x: 0, y: 0};
+        
+        let steer = {x: 0, y: 0};
+        let count = 0;
+        
+        for (let {fish, distance, dx, dy} of nearbyFish) {
+          if (fish.type === 'predator' && distance < this.predatorAvoidRadius) {
+            const mag = distance;
+            if (mag > 0) {
+              let diffX = dx / mag;
+              let diffY = dy / mag;
+              diffX /= distance; // Weight by distance
+              diffY /= distance;
+              steer.x += diffX;
+              steer.y += diffY;
+              count++;
+            }
+          }
+        }
+        
+        if (count > 0) {
+          steer.x /= count;
+          steer.y /= count;
+          const mag = Math.sqrt(steer.x * steer.x + steer.y * steer.y);
+          if (mag > 0) {
+            steer.x = (steer.x / mag) * this.maxSpeed - this.vx;
+            steer.y = (steer.y / mag) * this.maxSpeed - this.vy;
+            this.limit(steer, this.maxForce);
+          }
+        }
+        
+        return steer;
+      }
+      
+      cohesion(fishes) {
+        let sum = {x: 0, y: 0};
+        let count = 0;
+        
+        for (let fish of fishes) {
+          const d = this.distance(fish);
+          if (d > 0 && d < this.cohesionRadius) {
+            sum.x += fish.x;
+            sum.y += fish.y;
+            count++;
+          }
+        }
+        
+        if (count > 0) {
+          sum.x /= count;
+          sum.y /= count;
+          return this.seek(sum.x, sum.y);
+        }
+        
+        return {x: 0, y: 0};
+      }
+      
+      seekMouse(mouseX, mouseY) {
+        const dx = mouseX - this.x;
+        const dy = mouseY - this.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        
+        if (distance < 100 && distance > 0) {
+          const force = Math.max(0, (100 - distance) / 100) * 0.002;
+          return {
+            x: (dx / distance) * force,
+            y: (dy / distance) * force
+          };
+        }
+        
+        return {x: 0, y: 0};
+      }
+      
+      seekLeaders(fishes) {
+        if (this.type === 'leader') return {x: 0, y: 0};
+        
+        let sum = {x: 0, y: 0};
+        let count = 0;
+        
+        for (let fish of fishes) {
+          if (fish.type === 'leader') {
+            const d = this.distance(fish);
+            if (d > 0 && d < this.leaderSeekRadius) {
+              sum.x += fish.x;
+              sum.y += fish.y;
+              count++;
+            }
+          }
+        }
+        
+        if (count > 0) {
+          sum.x /= count;
+          sum.y /= count;
+          return this.seek(sum.x, sum.y);
+        }
+        
+        return {x: 0, y: 0};
+      }
+      
+      seekLeadersOptimized(nearbyFish) {
+        if (this.type === 'leader') return {x: 0, y: 0};
+        
+        let sum = {x: 0, y: 0};
+        let count = 0;
+        
+        for (let {fish, distance} of nearbyFish) {
+          if (fish.type === 'leader' && distance < this.leaderSeekRadius) {
+            sum.x += fish.x;
+            sum.y += fish.y;
+            count++;
+          }
+        }
+        
+        if (count > 0) {
+          sum.x /= count;
+          sum.y /= count;
+          return this.seek(sum.x, sum.y);
+        }
+        
+        return {x: 0, y: 0};
+      }
+      
+      avoidPredators(fishes) {
+        if (this.type === 'predator') return {x: 0, y: 0};
+        
+        let steer = {x: 0, y: 0};
+        let count = 0;
+        
+        for (let fish of fishes) {
+          if (fish.type === 'predator') {
+            const d = this.distance(fish);
+            if (d > 0 && d < this.predatorAvoidRadius) {
+              const diff = {
+                x: this.x - fish.x,
+                y: this.y - fish.y
+              };
+              const mag = Math.sqrt(diff.x * diff.x + diff.y * diff.y);
+              if (mag > 0) {
+                diff.x /= mag;
+                diff.y /= mag;
+                diff.x /= d; // Weight by distance - closer predators have stronger effect
+                diff.y /= d;
+                steer.x += diff.x;
+                steer.y += diff.y;
+                count++;
+              }
+            }
+          }
+        }
+        
+        if (count > 0) {
+          steer.x /= count;
+          steer.y /= count;
+          const mag = Math.sqrt(steer.x * steer.x + steer.y * steer.y);
+          if (mag > 0) {
+            steer.x = (steer.x / mag) * this.maxSpeed - this.vx;
+            steer.y = (steer.y / mag) * this.maxSpeed - this.vy;
+            this.limit(steer, this.maxForce);
+          }
+        }
+        
+        return steer;
+      }
+      
+      wander() {
+        if (this.type !== 'predator') return {x: 0, y: 0};
+        
+        // Update wander angle with small random changes
+        this.wanderAngle += (Math.random() - 0.5) * 0.3;
+        
+        // Create a target point in front of the fish
+        const wanderDistance = 60;
+        const wanderRadius = 25;
+        
+        const targetX = this.x + Math.cos(this.angle) * wanderDistance + Math.cos(this.wanderAngle) * wanderRadius;
+        const targetY = this.y + Math.sin(this.angle) * wanderDistance + Math.sin(this.wanderAngle) * wanderRadius;
+        
+        const wanderForce = this.seek(targetX, targetY);
+        wanderForce.x *= 0.5; // Gentle wandering force
+        wanderForce.y *= 0.5;
+        
+        return wanderForce;
+      }
+      
+      huntPrey(fishes) {
+        if (this.type !== 'predator') return {x: 0, y: 0};
+        
+        let closest = null;
+        let closestDistance = Infinity;
+        
+        // Find closest non-predator fish
+        for (let fish of fishes) {
+          if (fish.type !== 'predator') {
+            const d = this.distance(fish);
+            if (d > 0 && d < 150 && d < closestDistance) {
+              closest = fish;
+              closestDistance = d;
+            }
+          }
+        }
+        
+        if (closest) {
+          const huntForce = this.seek(closest.x, closest.y);
+          huntForce.x *= 0.8; // Moderate hunting force
+          huntForce.y *= 0.8;
+          return huntForce;
+        }
+        
+        return {x: 0, y: 0};
+      }
+      
+      seek(targetX, targetY) {
+        const desired = {
+          x: targetX - this.x,
+          y: targetY - this.y
+        };
+        const mag = Math.sqrt(desired.x * desired.x + desired.y * desired.y);
+        
+        if (mag > 0) {
+          desired.x = (desired.x / mag) * this.maxSpeed;
+          desired.y = (desired.y / mag) * this.maxSpeed;
+          const steer = {
+            x: desired.x - this.vx,
+            y: desired.y - this.vy
+          };
+          this.limit(steer, this.maxForce);
+          return steer;
+        }
+        
+        return {x: 0, y: 0};
+      }
+      
+      distance(other) {
+        const dx = this.x - other.x;
+        const dy = this.y - other.y;
+        return Math.sqrt(dx * dx + dy * dy);
+      }
+      
+      limit(vector, max) {
+        const mag = Math.sqrt(vector.x * vector.x + vector.y * vector.y);
+        if (mag > max) {
+          vector.x = (vector.x / mag) * max;
+          vector.y = (vector.y / mag) * max;
+        }
+      }
+      
+      draw(ctx) {
+        // Draw trajectory trail first (behind the fish)
+        this.drawTrail(ctx);
+        
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.angle);
+        
+        // Simple triangle fish
+        if (this.type === 'predator') {
+          // Rounded, gentle predator shape
+          ctx.fillStyle = `rgba(255, 140, 0, ${this.opacity})`;
+          ctx.beginPath();
+          ctx.moveTo(this.size * 1.8, 0); // Less pointy front
+          ctx.lineTo(-this.size * 1.2, -this.size * 1.0); // Wider, rounder body
+          ctx.lineTo(-this.size * 1.2, this.size * 1.0);
+          ctx.closePath();
+          ctx.fill();
+        } else if (this.type === 'leader') {
+          // Blue leader triangles
+          ctx.fillStyle = `rgba(110, 181, 255, ${this.opacity})`;
+          ctx.beginPath();
+          ctx.moveTo(this.size * 2, 0);
+          ctx.lineTo(-this.size, -this.size);
+          ctx.lineTo(-this.size, this.size);
+          ctx.closePath();
+          ctx.fill();
+        } else {
+          // Grey follower triangles
+          ctx.fillStyle = `rgba(160, 160, 160, ${this.opacity})`;
+          ctx.beginPath();
+          ctx.moveTo(this.size * 1.5, 0);
+          ctx.lineTo(-this.size * 0.8, -this.size * 0.8);
+          ctx.lineTo(-this.size * 0.8, this.size * 0.8);
+          ctx.closePath();
+          ctx.fill();
+        }
+        
+        ctx.restore();
+      }
+      
+      drawTrail(ctx) {
+        if (this.trail.length < 2) return;
+        
+        ctx.save();
+        ctx.setLineDash([2, 4]);
+        ctx.lineWidth = 1;
+        
+        // Get base color for this fish type
+        let baseColor;
+        if (this.type === 'predator') {
+          baseColor = [255, 140, 0];
+        } else if (this.type === 'leader') {
+          baseColor = [110, 181, 255];
+        } else {
+          baseColor = [160, 160, 160];
+        }
+        
+        // Batch trail segments by opacity level for fewer state changes
+        const opacityLevels = 8; // Reduce granularity for performance
+        for (let level = 0; level < opacityLevels; level++) {
+          const segments = [];
+          const startIdx = Math.floor((level / opacityLevels) * this.trail.length);
+          const endIdx = Math.floor(((level + 1) / opacityLevels) * this.trail.length);
+          
+          for (let i = Math.max(1, startIdx); i < Math.min(this.trail.length, endIdx); i++) {
+            const prev = this.trail[i - 1];
+            const curr = this.trail[i];
+            
+            // Skip if teleportation jump
+            const dx = curr.x - prev.x;
+            const dy = curr.y - prev.y;
+            if (dx * dx + dy * dy > 10000) continue; // Optimized distance check
+            
+            segments.push({ prev, curr });
+          }
+          
+          if (segments.length > 0) {
+            const alpha = ((level + 1) / opacityLevels) * 0.4 * this.opacity;
+            ctx.strokeStyle = `rgba(${baseColor[0]}, ${baseColor[1]}, ${baseColor[2]}, ${alpha})`;
+            
+            ctx.beginPath();
+            for (const segment of segments) {
+              ctx.moveTo(segment.prev.x, segment.prev.y);
+              ctx.lineTo(segment.curr.x, segment.curr.y);
+            }
+            ctx.stroke();
+          }
+        }
+        
+        ctx.restore();
+      }
+    }
+    
+    class FishSwarm {
+      constructor(canvas) {
+        this.canvas = canvas;
+        this.ctx = canvas.getContext('2d');
+        this.width = window.innerWidth;
+        this.height = window.innerHeight;
+        this.fishes = [];
+        this.fishCount = Math.floor((this.width * this.height) / 8000);
+        
+        // Mouse tracking
+        this.mouseX = this.width / 2;
+        this.mouseY = this.height / 2;
+        
+        // Fish dynamics tracking
+        this.frameCount = 0;
+        this.averageSpeed = 0;
+        this.cohesionLevel = 0;
+        this.packSize = 0;
+        this.speedHistory = [];
+        this.cohesionHistory = [];
+        this.packSizeHistory = [];
+        this.maxHistoryLength = 60; // 1 second at 60fps
+        
+        this.setupCanvas();
+        this.initializeFishes();
+        this.bindEvents();
+        this.animate();
+      }
+      
+      setupCanvas() {
+        this.canvas.width = this.width;
+        this.canvas.height = this.height;
+      }
+      
+      initializeFishes() {
+        this.fishes = [];
+        const leaderCount = Math.floor(this.fishCount * 0.15); // 15% leaders
+        const followerCount = this.fishCount - leaderCount - 1; // -1 for the single predator
+        
+        // Create single predator fish (dark orange)
+        this.fishes.push(new Fish(
+          Math.random() * this.width,
+          Math.random() * this.height,
+          'predator'
+        ));
+        
+        // Create leader fish (blue)
+        for (let i = 0; i < leaderCount; i++) {
+          this.fishes.push(new Fish(
+            Math.random() * this.width,
+            Math.random() * this.height,
+            'leader'
+          ));
+        }
+        
+        // Create follower fish (grey)
+        for (let i = 0; i < followerCount; i++) {
+          this.fishes.push(new Fish(
+            Math.random() * this.width,
+            Math.random() * this.height,
+            'follower'
+          ));
+        }
+      }
+      
+      bindEvents() {
+        document.addEventListener('mousemove', (e) => {
+          this.mouseX = e.clientX;
+          this.mouseY = e.clientY;
+        });
+        
+        window.addEventListener('resize', () => {
+          this.width = window.innerWidth;
+          this.height = window.innerHeight;
+          this.setupCanvas();
+          this.fishCount = Math.floor((this.width * this.height) / 8000);
+          this.initializeFishes();
+        });
+      }
+      
+      calculateDynamics() {
+        let totalSpeed = 0;
+        let totalCohesion = 0;
+        let neighborPairs = 0;
+        let totalPackSize = 0;
+        let leaderCount = 0;
+        
+        // Calculate average speed
+        for (let fish of this.fishes) {
+          const speed = Math.sqrt(fish.vx * fish.vx + fish.vy * fish.vy);
+          totalSpeed += speed;
+        }
+        
+        // Calculate cohesion and pack sizes
+        for (let i = 0; i < this.fishes.length; i++) {
+          let nearbyCount = 0;
+          let avgDistance = 0;
+          
+          // For leaders, count nearby grey followers
+          if (this.fishes[i].type === 'leader') {
+            let followersInPack = 0;
+            leaderCount++;
+            
+            for (let j = 0; j < this.fishes.length; j++) {
+              if (i !== j) {
+                const distance = this.fishes[i].distance(this.fishes[j]);
+                
+                // Count followers within leader seek radius
+                if (this.fishes[j].type === 'follower' && distance < this.fishes[j].leaderSeekRadius) {
+                  followersInPack++;
+                }
+                
+                // Calculate cohesion for all nearby fish
+                if (distance < 80) {
+                  avgDistance += distance;
+                  nearbyCount++;
+                }
+              }
+            }
+            
+            totalPackSize += followersInPack;
+          } else {
+            // For followers, just calculate cohesion
+            for (let j = 0; j < this.fishes.length; j++) {
+              if (i !== j) {
+                const distance = this.fishes[i].distance(this.fishes[j]);
+                if (distance < 80) {
+                  avgDistance += distance;
+                  nearbyCount++;
+                }
+              }
+            }
+          }
+          
+          if (nearbyCount > 0) {
+            totalCohesion += 80 - (avgDistance / nearbyCount);
+            neighborPairs++;
+          }
+        }
+        
+        const currentSpeed = totalSpeed / this.fishes.length;
+        const currentCohesion = neighborPairs > 0 ? totalCohesion / neighborPairs : 0;
+        const currentPackSize = leaderCount > 0 ? totalPackSize / leaderCount : 0;
+        
+        // Update rolling averages
+        this.speedHistory.push(currentSpeed);
+        this.cohesionHistory.push(currentCohesion);
+        this.packSizeHistory.push(currentPackSize);
+        
+        if (this.speedHistory.length > this.maxHistoryLength) {
+          this.speedHistory.shift();
+        }
+        if (this.cohesionHistory.length > this.maxHistoryLength) {
+          this.cohesionHistory.shift();
+        }
+        if (this.packSizeHistory.length > this.maxHistoryLength) {
+          this.packSizeHistory.shift();
+        }
+        
+        this.averageSpeed = this.speedHistory.reduce((a, b) => a + b, 0) / this.speedHistory.length;
+        this.cohesionLevel = this.cohesionHistory.reduce((a, b) => a + b, 0) / this.cohesionHistory.length;
+        this.packSize = this.packSizeHistory.reduce((a, b) => a + b, 0) / this.packSizeHistory.length;
+      }
+      
+      updateStatusDisplay() {
+        const statsElement = document.getElementById('fish-stats');
+        if (statsElement && this.frameCount % 30 === 0) { // Update twice per second
+          const speedPercent = Math.min(100, Math.round((this.averageSpeed / 2) * 100));
+          const cohesionPercent = Math.min(100, Math.round((this.cohesionLevel / 40) * 100));
+          const packSizeRounded = Math.round(this.packSize * 10) / 10; // Round to 1 decimal
+          
+          statsElement.textContent = `VELOCITY: ${speedPercent}% | COHESION: ${cohesionPercent}% | PACK SIZE: ${packSizeRounded}`;
+        }
+      }
+      
+      animate() {
+        this.ctx.clearRect(0, 0, this.width, this.height);
+        
+        // Update and draw all fishes
+        for (let fish of this.fishes) {
+          fish.update(this.fishes, this.mouseX, this.mouseY);
+          fish.draw(this.ctx);
+        }
+        
+        // Calculate dynamics less frequently for performance
+        if (this.frameCount % 3 === 0) {
+          this.calculateDynamics();
+        }
+        this.updateStatusDisplay();
+        this.frameCount++;
+        
+        requestAnimationFrame(() => this.animate());
+      }
+    }
+    
+    // Global fish swarm instance
+    let fishSwarm = null;
+    
+    // Toggle info card visibility
+    function toggleInfoCard() {
+      const infoCard = document.getElementById('info-card');
+      const footer = document.getElementById('footer');
+      
+      if (infoCard.style.display === 'none') {
+        infoCard.style.display = 'block';
+        footer.style.display = 'block';
+      } else {
+        infoCard.style.display = 'none';
+        footer.style.display = 'none';
+      }
+    }
+    
+    // Add visual feedback for button clicks
+    function buttonFeedback() {
+      const terminalHeader = document.querySelector('.terminal-header');
+      terminalHeader.classList.add('button-feedback');
+      setTimeout(() => {
+        terminalHeader.classList.remove('button-feedback');
+      }, 150);
+    }
+    
+    // Add fish with same proportions
+    function addFish() {
+      if (!fishSwarm) return;
+      
+      const increment = 100; // Add 100 fish at a time (10x more)
+      const predatorIncrement = 0; // Keep only 1 predator
+      const leaderIncrement = Math.floor(increment * 0.15); // 15% leaders
+      const followerIncrement = increment - leaderIncrement; // Rest are followers
+      
+      // Add leader fish
+      for (let i = 0; i < leaderIncrement; i++) {
+        fishSwarm.fishes.push(new Fish(
+          Math.random() * fishSwarm.width,
+          Math.random() * fishSwarm.height,
+          'leader'
+        ));
+      }
+      
+      // Add follower fish
+      for (let i = 0; i < followerIncrement; i++) {
+        fishSwarm.fishes.push(new Fish(
+          Math.random() * fishSwarm.width,
+          Math.random() * fishSwarm.height,
+          'follower'
+        ));
+      }
+      
+      fishSwarm.fishCount = fishSwarm.fishes.length;
+      buttonFeedback();
+    }
+    
+    // Remove fish with same proportions
+    function removeFish() {
+      if (!fishSwarm || fishSwarm.fishes.length <= 5) return; // Keep minimum 5 fish
+      
+      const decrement = Math.min(100, fishSwarm.fishes.length - 5); // Remove up to 100, but keep at least 5
+      const predatorCount = fishSwarm.fishes.filter(f => f.type === 'predator').length;
+      const leaderCount = fishSwarm.fishes.filter(f => f.type === 'leader').length;
+      const followerCount = fishSwarm.fishes.filter(f => f.type === 'follower').length;
+      
+      const leaderDecrement = Math.min(Math.floor(decrement * 0.15), leaderCount);
+      const followerDecrement = Math.min(decrement - leaderDecrement, followerCount);
+      
+      // Remove leaders
+      for (let i = 0; i < leaderDecrement; i++) {
+        const leaderIndex = fishSwarm.fishes.findIndex(f => f.type === 'leader');
+        if (leaderIndex !== -1) {
+          fishSwarm.fishes.splice(leaderIndex, 1);
+        }
+      }
+      
+      // Remove followers
+      for (let i = 0; i < followerDecrement; i++) {
+        const followerIndex = fishSwarm.fishes.findIndex(f => f.type === 'follower');
+        if (followerIndex !== -1) {
+          fishSwarm.fishes.splice(followerIndex, 1);
+        }
+      }
+      
+      fishSwarm.fishCount = fishSwarm.fishes.length;
+      buttonFeedback();
+    }
+    
+    // Initialize when page loads
+    document.addEventListener('DOMContentLoaded', () => {
+      const canvas = document.getElementById('nematic-canvas');
+      fishSwarm = new FishSwarm(canvas);
+      
+      // Add click handler to terminal header buttons
+      const terminalHeader = document.querySelector('.terminal-header');
+      terminalHeader.addEventListener('click', (e) => {
+        // Check if click was on the red button area (first 12px of the ::before pseudo-element)
+        const rect = terminalHeader.getBoundingClientRect();
+        const clickX = e.clientX - rect.left;
+        
+        // Red button (close) - toggle info card
+        if (clickX >= 0 && clickX <= 12) {
+          toggleInfoCard();
+        }
+        // Yellow button (minimize) - remove fish
+        else if (clickX >= 18 && clickX <= 30) {
+          removeFish();
+        }
+        // Green button (maximize) - add fish
+        else if (clickX >= 36 && clickX <= 48) {
+          addFish();
+        }
+      });
+    });
+  </script>
+</body>
+</html>

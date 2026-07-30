@@ -1,0 +1,268 @@
+<html>
+<head><meta charset="utf-8" /></head>
+<body>
+<style>
+  /* Position the slider container at the bottom center */
+  #slider-container {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(44,44,44,0.8);
+    padding: 10px 20px;
+    border-radius: 5px;
+    z-index: 1000;
+  }
+  #slider-container div {
+    margin: 5px;
+  }
+  #slider-container label {
+    color: grey;
+    font-size: 14px;
+  }
+  #slider-container span {
+    color: grey;
+    font-size: 14px;
+  }
+</style>
+<div id="slider-container">
+  <div style="display: flex; gap: 40px;">
+    <div>
+      <div>
+        <label>p1:
+          <input type="range" id="p1-slider" min="0" max="1" step="0.01" value="0.8" style="accent-color:#444;">
+        </label>
+        <span id="p1-val">0.8</span>
+      </div>
+      <div>
+        <label>p2:
+          <input type="range" id="p2-slider" min="0" max="1" step="0.01" value="0.5" style="accent-color:#444;">
+        </label>
+        <span id="p2-val">0.5</span>
+      </div>
+      <div>
+        <label>p3:
+          <input type="range" id="p3-slider" min="0" max="1" step="0.01" value="0.3" style="accent-color:#444;">
+        </label>
+        <span id="p3-val">0.3</span>
+      </div>
+      <div>
+        <label>p4:
+          <input type="range" id="p4-slider" min="0" max="1" step="0.01" value="0.4" style="accent-color:#444;">
+        </label>
+        <span id="p4-val">0.4</span>
+      </div>
+    </div>
+    <div>
+      <div>
+        <label>R:
+          <input type="range" id="R-slider" min="-5" max="5" step="0.01" value="3" style="accent-color:#444;">
+        </label>
+        <span id="R-val">3</span>
+      </div>
+      <div>
+        <label>S:
+          <input type="range" id="S-slider" min="-5" max="5" step="0.01" value="2" style="accent-color:#444;">
+        </label>
+        <span id="S-val">2</span>
+      </div>
+      <div>
+        <label>T:
+          <input type="range" id="T-slider" min="-5" max="5" step="0.01" value="5" style="accent-color:#444;">
+        </label>
+        <span id="T-val">5</span>
+      </div>
+      <div>
+        <label>P:
+          <input type="range" id="P-slider" min="-5" max="5" step="0.01" value="1" style="accent-color:#444;">
+        </label>
+        <span id="P-val">1</span>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+function normalize(v) {
+  var mag = Math.sqrt(v[0]*v[0] + v[1]*v[1] + v[2]*v[2]);
+  return [v[0]/mag, v[1]/mag, v[2]/mag];
+}
+function cross(a, b) {
+  return [
+    a[1]*b[2] - a[2]*b[1],
+    a[2]*b[0] - a[0]*b[2],
+    a[0]*b[1] - a[1]*b[0]
+  ];
+}
+function dot(a, b) {
+  return a[0]*b[0] + a[1]*b[1] + a[2]*b[2];
+}
+function subtract(a, b) {
+  return [a[0]-b[0], a[1]-b[1], a[2]-b[2]];
+}
+function add(a, b) {
+  return [a[0]+b[0], a[1]+b[1], a[2]+b[2]];
+}
+function scale(v, s) {
+  return [v[0]*s, v[1]*s, v[2]*s];
+}
+function edgeIntersection(P1, P2, planePt, norm) {
+  var d1 = dot(subtract(P1, planePt), norm);
+  var d2 = dot(subtract(P2, planePt), norm);
+  if(d1*d2 <= 0) {
+    var t = -d1 / (d2 - d1);
+    return add(P1, scale(subtract(P2, P1), t));
+  }
+  return null;
+}
+function updatePlane() {
+  var p1_val = parseFloat(document.getElementById("p1-slider").value);
+  var p2_val = parseFloat(document.getElementById("p2-slider").value);
+  var p3_val = parseFloat(document.getElementById("p3-slider").value);
+  var p4_val = parseFloat(document.getElementById("p4-slider").value);
+  document.getElementById("p1-val").innerText = p1_val;
+  document.getElementById("p2-val").innerText = p2_val;
+  document.getElementById("p3-val").innerText = p3_val;
+  document.getElementById("p4-val").innerText = p4_val;
+  
+  // Normal vector: (v1,v2,v3) = (1 - p1 + p4, 1 - p2 + p4, p4 - p3)
+  var v1 = 1 - p1_val + p4_val;
+  var v2 = 1 - p2_val + p4_val;
+  var v3 = p4_val - p3_val;
+  var normal = normalize([v1, v2, v3]);
+  
+  var R_val = parseFloat(document.getElementById("R-slider").value);
+  var S_val = parseFloat(document.getElementById("S-slider").value);
+  var T_val = parseFloat(document.getElementById("T-slider").value);
+  var P_val = parseFloat(document.getElementById("P-slider").value);
+  document.getElementById("R-val").innerText = R_val;
+  document.getElementById("S-val").innerText = S_val;
+  document.getElementById("T-val").innerText = T_val;
+  document.getElementById("P-val").innerText = P_val;
+  
+  var projVector = [R_val - P_val, S_val - P_val, T_val - P_val];
+  
+  var A = [0, 0, 0];
+  var B = [1, 0, 0];
+  var C = [0, 1, 0];
+  var D = [0, 0, 1];
+  var centroid_simplex = [
+    (A[0]+B[0]+C[0]+D[0]) / 4,
+    (A[1]+B[1]+C[1]+D[1]) / 4,
+    (A[2]+B[2]+C[2]+D[2]) / 4
+  ];
+  
+  // (I) Calculate the "start point" using the provided formula.
+  var Den = -1 + p3_val - Math.pow(p1_val,2)*(-1+p2_val+p3_val-2*p4_val) - 2*p4_val + Math.pow(p4_val,2) + p3_val*Math.pow(p4_val,2) + 2*p1_val*(p2_val*p3_val-Math.pow(p4_val,2)) + p2_val*(1+Math.pow(p4_val,2)-2*p3_val*(1+p4_val));
+  var start_x = (p4_val * (((-1+p3_val)*p4_val) + p2_val*(-2*p3_val+p4_val))) / Den;
+  var start_y = (((-1+p1_val)*(1+p1_val-p4_val)*p4_val)) / Den;
+  var start_z = (((-1+p1_val)*(1+p1_val-p4_val)*p4_val)) / Den;
+  var startPoint = [start_x, start_y, start_z];
+  
+  // (II) Create the plane using startPoint and normal.
+  var edges = [
+    [A, B],
+    [A, C],
+    [A, D],
+    [B, C],
+    [B, D],
+    [C, D]
+  ];
+  var intersections = [];
+  for (var i = 0; i < edges.length; i++) {
+    var P1 = edges[i][0];
+    var P2 = edges[i][1];
+    var d1 = dot(subtract(P1, startPoint), normal);
+    var d2 = dot(subtract(P2, startPoint), normal);
+    if(Math.abs(d1) < 1e-6 && !intersections.some(p => Math.hypot(p[0]-P1[0], p[1]-P1[1], p[2]-P1[2]) < 1e-6)) {
+      intersections.push(P1);
+    }
+    if(Math.abs(d2) < 1e-6 && !intersections.some(p => Math.hypot(p[0]-P2[0], p[1]-P2[1], p[2]-P2[2]) < 1e-6)) {
+      intersections.push(P2);
+    }
+    if(d1*d2 < 0) {
+      var t = -d1/(d2-d1);
+      var interPt = add(P1, scale(subtract(P2, P1), t));
+      if(!intersections.some(p => Math.hypot(p[0]-interPt[0], p[1]-interPt[1], p[2]-interPt[2]) < 1e-6)) {
+        intersections.push(interPt);
+      }
+    }
+  }
+  if(intersections.length < 3) return;
+  
+  // (III) Clip the plane: Keep only intersections within the simplex.
+  var points2D = intersections.map(function(pt) {
+    var diff = subtract(pt, startPoint);
+    var ref = (Math.abs(normal[0]) < 0.001 && Math.abs(normal[1]) < 0.001) ? [0,1,0] : [1,0,0];
+    return { pt: pt, angle: Math.atan2(dot(diff, cross(normal, ref)), dot(diff, ref)) };
+  });
+  points2D.sort(function(a, b) { return a.angle - b.angle; });
+  var sortedPoints = points2D.map(function(p) { return p.pt; });
+  
+  var X = sortedPoints.map(p => p[0]);
+  var Y = sortedPoints.map(p => p[1]);
+  var Z = sortedPoints.map(p => p[2]);
+  var tri_i = [], tri_j = [], tri_k = [];
+  for(var i = 1; i < sortedPoints.length - 1; i++){
+    tri_i.push(0);
+    tri_j.push(i);
+    tri_k.push(i+1);
+  }
+  
+  var polyCentroid = [0,0,0];
+  sortedPoints.forEach(function(pt) {
+    polyCentroid = add(polyCentroid, pt);
+  });
+  polyCentroid = scale(polyCentroid, 1/sortedPoints.length);
+  var intensity = sortedPoints.map(function(pt) {
+    return dot(subtract(pt, polyCentroid), projVector);
+  });
+  
+  Plotly.restyle('plot', {
+    x: [X],
+    y: [Y],
+    z: [Z],
+    i: [tri_i],
+    j: [tri_j],
+    k: [tri_k],
+    intensity: [intensity]
+  }, 1);
+  
+  var interBD = edgeIntersection(B, D, startPoint, normal);
+  var interBA = edgeIntersection(B, A, startPoint, normal);
+  var interAC = edgeIntersection(A, C, startPoint, normal);
+  var interCD = edgeIntersection(C, D, startPoint, normal);
+  
+  var edgeAnnX = [], edgeAnnY = [], edgeAnnZ = [], edgeAnnText = [];
+  if(interBD != null) { edgeAnnX.push(interBD[0]); edgeAnnY.push(interBD[1]); edgeAnnZ.push(interBD[2]); edgeAnnText.push("ALLC"); }
+  if(interBA != null) { edgeAnnX.push(interBA[0]); edgeAnnY.push(interBA[1]); edgeAnnZ.push(interBA[2]); edgeAnnText.push("COPY"); }
+  if(interAC != null) { edgeAnnX.push(interAC[0]); edgeAnnY.push(interAC[1]); edgeAnnZ.push(interAC[2]); edgeAnnText.push("ALLD"); }
+  if(interCD != null) { edgeAnnX.push(interCD[0]); edgeAnnY.push(interCD[1]); edgeAnnZ.push(interCD[2]); edgeAnnText.push("ACOPY"); }
+  
+  Plotly.restyle('plot', {
+    x: [edgeAnnX],
+    y: [edgeAnnY],
+    z: [edgeAnnZ],
+    text: [edgeAnnText]
+  }, 3);
+  
+  Plotly.restyle('plot', {
+    x: [[startPoint[0]]],
+    y: [[startPoint[1]]],
+    z: [[startPoint[2]]]
+  }, 4);
+}
+document.getElementById("p1-slider").addEventListener("input", updatePlane);
+document.getElementById("p2-slider").addEventListener("input", updatePlane);
+document.getElementById("p3-slider").addEventListener("input", updatePlane);
+document.getElementById("p4-slider").addEventListener("input", updatePlane);
+document.getElementById("R-slider").addEventListener("input", updatePlane);
+document.getElementById("S-slider").addEventListener("input", updatePlane);
+document.getElementById("T-slider").addEventListener("input", updatePlane);
+document.getElementById("P-slider").addEventListener("input", updatePlane);
+document.addEventListener("DOMContentLoaded", updatePlane);
+</script>
+
+    <div>                        <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-3.0.0.min.js"></script>                <div id="plot" class="plotly-graph-div" style="height:100%; width:100%;"></div>            <script type="text/javascript">                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("plot")) {                    Plotly.newPlot(                        "plot",                        [{"line":{"color":"lightgrey","width":5},"mode":"lines","showlegend":false,"x":[0,1,null,0,0,null,0,0,null,1,0,null,1,0,null,0,0,null],"y":[0,0,null,0,1,null,0,0,null,0,1,null,0,0,null,1,0,null],"z":[0,0,null,0,0,null,0,1,null,0,0,null,0,1,null,0,1,null],"type":"scatter3d"},{"colorscale":[[0,"black"],[1,"lightgrey"]],"i":[0],"intensity":[0,0,0],"j":[1],"k":[2],"name":"Clipped Plane","opacity":0.5,"showscale":false,"x":[0.25,0.25,0.25],"y":[0.25,0.25,0.25],"z":[0.25,0.25,0.25],"type":"mesh3d"},{"marker":{"color":"lightgrey","size":5},"mode":"markers+text","showlegend":false,"text":["CC","CD","DC","DD"],"textposition":"top center","x":[1,0,0,0],"y":[0,1,0,0],"z":[0,0,1,0],"type":"scatter3d"},{"mode":"text","showlegend":false,"text":["ALLC","COPY","ALLD","ACOPY"],"textfont":{"color":"lightgrey","size":24},"textposition":"middle center","x":[null],"y":[null],"z":[null],"type":"scatter3d"},{"marker":{"color":"darkblue","size":3},"mode":"markers","showlegend":false,"x":[null],"y":[null],"z":[null],"type":"scatter3d"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermap":[{"type":"scattermap","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"}}},"font":{"color":"#e0e0e0"},"scene":{"xaxis":{"visible":false},"yaxis":{"visible":false},"zaxis":{"visible":false}},"paper_bgcolor":"#2c2c2c","plot_bgcolor":"#2c2c2c","showlegend":false},                        {"responsive": true}                    )                };            </script>        </div>
+</body>
+</html>

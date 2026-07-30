@@ -1,0 +1,3 @@
+{{- $number := add (.Page.Scratch.Get "margin-footnote-count" | default 0) 1 -}}
+{{- .Page.Scratch.Set "margin-footnote-count" $number -}}
+<sup class="margin-footnote-ref"><a href="#margin-footnote-{{ $number }}" aria-describedby="margin-footnote-{{ $number }}">{{ $number }}</a></sup><span class="margin-footnote" id="margin-footnote-{{ $number }}"><span class="margin-footnote__number">{{ $number }}.</span> {{ .Inner | markdownify }}</span>

@@ -1,0 +1,13 @@
+# Lenz Pracher
+
+> Personal website of Lenz Pracher — physics / machine-learning researcher (LMU).
+> Research write-ups on deep learning theory: learning dynamics, the neural
+> tangent kernel, and grokking.
+
+## Writing
+
+- [A Spectral Theory of Grokking](https://lenzpracher.github.io/projects/grokking/): How weight decay drives grokking through evolution of the neural tangent kernel.
+
+## Index
+
+- [Sitemap](https://lenzpracher.github.io/sitemap.xml): Full list of pages.
