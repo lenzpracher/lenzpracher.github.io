@@ -14,12 +14,12 @@ authors = ['Lenz Pracher', 'Pascal de Jong', 'Oskar Liesaus', 'Alan Jeffares', '
 <details class="tldr" open>
   <summary>TLDR</summary>
   <div class="tldr__body">
-    <p>In this post, I will present a theory of Grokking through time scale separation. Homogenenous neural networks perform the kernel ridge regression solution on fast scales, while operating feature learning on slow time scales controlled by Weight Decay. Grokking is then delayed generalization, where we reach a fast memorizing solution through regression on a fixed feature set and slowly increase task aligning features at the same pace producing a sharp generalization transition. The evolution of task aligned features is driven by the irreducible loss induced by L2 Weight Decay.</p>
+    <p>In this post, I will present a theory of Grokking through time scale separation. Homogeneous neural networks perform the kernel ridge regression solution on fast scales, while operating feature learning on slow time scales controlled by Weight Decay. Grokking is then delayed generalization, where we reach a fast memorizing solution through regression on a fixed feature set and slowly increase task aligning features at the same pace producing a sharp generalization transition. The evolution of task aligned features is driven by the irreducible loss induced by L2 Weight Decay.</p>
   </div>
 </details>
 
 <figure class="grokking-figure">
-  <img src="../../images/grokking/learning-curve.png" alt="TrainingCan  accuracy reaches one long before validation accuracy rises during grokking.">
+  <img src="../../images/grokking/learning-curve.png" alt="Training accuracy reaches one long before validation accuracy rises during grokking.">
   <figcaption><strong>Figure 1.</strong> A typical grokking curve. The network fits the training set early leading to high accuracy, while generalization appears an order of magnitude of updates later. <a href="#setup-a">Setup A</a>.</figcaption>
 </figure>
 
@@ -32,7 +32,7 @@ We start by reviewing some of the background and describing the setup to arrive 
 
 [Nanda et al.](#ref-nanda) mechanistically investigated modular-addition transformers. They found a Fourier circuit that forms gradually beneath the sharp accuracy transition. Memorizing components dominate first, Fourier components grow later, and cleanup removes the remaining memorizing structure.
 
-The recent work by [Xu et al.](#ref-xu) analyze a simple enough model to be solved exactly. Ridge regression can be exactly solved on an over-parameterized linear model, trained by gradient descent with weight decay. They bound the generalization time in terms of the training hyperparameters. Their model traces feature learning back to an ill conditioned initialization through a fixed set of features.
+The recent work by [Xu et al.](#ref-xu) analyzes a simple enough model to be solved exactly. Ridge regression can be exactly solved on an over-parameterized linear model, trained by gradient descent with weight decay. They bound the generalization time in terms of the training hyperparameters. Their model traces feature learning back to an ill conditioned initialization through a fixed set of features.
 
 Other studies expanded the phase diagram under different hyperparameters. [Doshi et al.](#ref-doshi) separated comprehension, grokking, memorization, confusion, and forgetting on corrupted arithmetic data. We aim to add to the growing literature by providing an analytical perspective on the learning dynamics in ReLU MLPs.
 
@@ -42,7 +42,7 @@ Effective theories of Grokking can be reached by restriction of the model class.
 
 <div class="math-display">
 \[
-f_{\theta}(x^\mu) = D\cdot \nabla_\theta f_\theta\rvert_{x^\mu}\cdot \theta,
+D\cdot f_{\theta}(x^\mu) = \nabla_\theta f_\theta\rvert_{x^\mu}\cdot \theta,
 \]
 </div>
 
@@ -50,7 +50,7 @@ where $\theta$ are the stacked weights of the neural network $f_\theta$ and $D$ 
 
 ### 1.3 Decomposition of Modular Addition
 
-We achieve Grokking through mopdulo addition. Our learning task is therefore addition modulo a prime $p$:
+We achieve Grokking through modulo addition. Our learning task is therefore addition modulo a prime $p$:
 
 <div class="math-display">
 \[
@@ -59,7 +59,7 @@ We achieve Grokking through mopdulo addition. Our learning task is therefore add
 \]
 </div>
 
-The inputs and outputs are one-hot encoded. We also one-hot encode the output numeral $c$.Modulo addition is periodic with even frequencies $\frac{k}{p}$. The natural basis on this cyclic space consists of the characters
+The inputs and outputs are one-hot encoded. We also one-hot encode the output numeral $c$. Modulo addition is periodic with even frequencies $\frac{k}{p}$. The natural basis on this cyclic space consists of the characters
 
 <div class="math-display">
 \[
@@ -123,7 +123,7 @@ The first term is given by the regression objective. It is described by the empi
 \[
 \dot f_\theta(x^\mu)
 =\nabla_\theta f_\theta(x^\mu)\cdot\dot\theta
-=-\sum_\mu K(x^\mu,x^\nu)\,\sigma^\nu
+=-\sum_\nu K(x^\mu,x^\nu)\,\sigma^\nu
 -\lambda_W\cdot D\,f_\theta(x^\mu).
 \]
 </div>
@@ -134,22 +134,22 @@ With $D=2$ for the ReLU one-hidden layer neural network, the equations become:
 
 <div class="math-display">
 \[
-\dot{\boldsymbol\sigma^\mu}
-=-(K^{\mu\nu}+D\lambda_W I)\boldsymbol\sigma^\nu
--D\lambda_W\mathbf y^\mu .
+\dot{\boldsymbol\sigma}^\mu
+=-\sum_\nu(K^{\mu\nu}+2\lambda_W\delta^{\mu\nu})\boldsymbol\sigma^\nu
+-2\lambda_W\mathbf y^\mu .
 \]
 </div>
 
-Weight Decay forces a relaxation of the prediction. For samples with $y^\mu=0$, this amounts to an increase in prediction accuracy. This is why we see an increase in the relaxation rate $(\Lambda_\alpha+D\lambda_W)$. For samples with $y^\mu\neq 0$, Weight Decay induces an irreducible loss, which is supported by the source $-D\lambda_W y^\mu$ in the equations of motion. For a constant Kernel $K$, the dynamics reach the kernel ridge regression solution:
+Weight Decay forces a relaxation of the prediction. For samples with $y^\mu=0$, this amounts to an increase in prediction accuracy. This is why we see an increase in the relaxation rate $(\Lambda_\alpha+2\lambda_W)$. For samples with $y^\mu\neq 0$, Weight Decay induces an irreducible loss, which is supported by the source $-2\lambda_W y^\mu$ in the equations of motion. For a constant Kernel $K$, the dynamics reach the kernel ridge regression solution:
 
 <div class="math-display">
 \[
 \boldsymbol\sigma_*^\mu
-=-D\lambda_W\,(K^{\mu\nu}+D\lambda_W I)^{-1}\mathbf y^\nu .
+=-2\lambda_W\,(K^{\mu\nu}+2\lambda_W I)^{-1}\mathbf y^\nu .
 \]
 </div>
 
-Weight decay therefore leaves a residual behind, of size proportional to $\lambda_W$. One can also observe, that the only way to reduce the regression loss of this solution is to increase the alignment of $K$ with the label space $y^\mu$, while kernel modes independent of the target do not contribute. We therefore conclude, that for homogenenous neural networks, the dynamics are mainly driven by the empirical Neural Tangent Kernel and will in the following analyze the learning dynamics from this perspective.
+Weight decay therefore leaves a residual behind, of size proportional to $\lambda_W$. One can also observe, that the only way to reduce the regression loss of this solution is to increase the alignment of $K$ with the label space $y^\mu$, while kernel modes independent of the target do not contribute. We therefore conclude, that for homogeneous neural networks, the dynamics are mainly driven by the empirical Neural Tangent Kernel and will in the following analyze the learning dynamics from this perspective.
 
 ## 2. Generalization with Tangent Features
 
@@ -170,7 +170,7 @@ We first inspect the NTK $K^{\mu\nu}$ throughout one grokking run. At initializa
 
 ### 2.1 Investigation of the Eigenspectrum
 
-We want to understand, how this fine structure relates to generalization. To this end, we investigate the Kernel Eigenspectrum and how it relates to the label space. We plot the components of the eigenvectors with the 6 highest eigenvalues, which dominate the residual dynamics. Before generalization the eigenvectors are noisy. At the generalization boundary, we observe the emergence of standing waves in label space. These correspond directly to the characters with same frequency in both $a,b$ Fourier Sectors as described in [section 1.3](#13-decomposition-of-modular-addition). As training continues, the highest eigenvalue eigenvectors emerge as standing waves over the modulo labels. This makes sense as it allows the neural network to discover the data generating rule by a linear combination of these features, which is how a homogenenous neural network produces its prediction. These standing waves are aligned with the target and therefore reduce the loss reached in the ridge regression equilibrium.
+We want to understand, how this fine structure relates to generalization. To this end, we investigate the Kernel Eigenspectrum and how it relates to the label space. We plot the components of the eigenvectors with the 6 highest eigenvalues, which dominate the residual dynamics. Before generalization the eigenvectors are noisy. At the generalization boundary, we observe the emergence of standing waves in label space. These correspond directly to the characters with same frequency in both $a,b$ Fourier Sectors as described in [section 1.3](#13-decomposition-of-modular-addition). As training continues, the highest eigenvalue eigenvectors emerge as standing waves over the modulo labels. This makes sense as it allows the neural network to discover the data generating rule by a linear combination of these features, which is how a homogeneous neural network produces its prediction. These standing waves are aligned with the target and therefore reduce the loss reached in the ridge regression equilibrium.
 
 <figure class="grokking-figure grokking-figure--wide">
   <img src="../../images/grokking/eigenvectors.png" alt="Leading empirical NTK eigenvectors become Fourier-like standing waves during grokking.">
@@ -179,7 +179,7 @@ We want to understand, how this fine structure relates to generalization. To thi
 
 ### 2.2 Evolution of Kernel Eigenmodes and the Neural Tangent Hierarchy
 
-We now understandm what structure emerges during the generalization transition in grokking modular arithmetic. However, the theoretical explanation for the delayed generalization through feature learning is still unclear. We investigate the evolution of the NTK $K$ during Gradient Flow. For this we employ the [Neural Tangent Hierarchy](#ref-huang) of Huang and Yau. The evolution of the NTK produces a second object $K^{(2)}(x,x';z)$, which then produces a fourth and onwards. The Neural Tangent Kernel and all higher order modes are again homogeneous functions allowing the integration of the Weight Decay terms. The coupled equations become:
+We now understand what structure emerges during the generalization transition in grokking modular arithmetic. However, the theoretical explanation for the delayed generalization through feature learning is still unclear. We investigate the evolution of the NTK $K$ during Gradient Flow. For this we employ the [Neural Tangent Hierarchy](#ref-huang) of Huang and Yau. The evolution of the NTK produces a second object $K^{(2)}(x,x';z)$, which then produces a fourth and onwards. The Neural Tangent Kernel and all higher order modes are again homogeneous functions allowing the integration of the Weight Decay terms. The coupled equations become:
 
 <div class="math-display">
 \[
@@ -194,7 +194,7 @@ We now understandm what structure emerges during the generalization transition i
 
 In the NTK initialization, the evolution of $K^{(2)}$ is suppressed by orders of the width $m$ with $K$ becoming constant in the infinite width limit. This gives us intuition that for finite width, we might be able to close the Neural Tangent Hierarchy and treat $K^{(2)}$ as constant. The $\boldsymbol\sigma$ term changes different kernel entries according to the current residuals. The weight Decay term instead exponentially decays every entry of $K$ directly. The growth of the NTK is then directly coupled to the remaining prediction residual.
 
-We now decompose into NTK Fourier modes and write the same equations for each Fourier direction {{< footnote >}}At initialization, one can explicitly compute the infinite width Neural Tangent Kernel, which then only depends on differences of inputs. By the convolution theorem, this Kernel is then diagonal in Fourier Space, which allows us to approximately track the evolution of each of the Fourier modes independently over time. Additionally, each Fourier mode (besides constant sectors) has equal weight at initialization with one-hot encoded inputs and outputs. This leads to the memorization solution at the start of the training, where all modes are used equally and allows us to focus on a single mode analysis, which will hold for all leaving an effective diagonal $K^{(2)}$.{{< /footnote >}}. Let $\Lambda$ be the eigenvalue of $K$ along a chosen Fourier vector $(a,b)$, and let $\sigma$ and $y$ be the residual and target components along that vector. Applying $K^{(2)}$ to the same vector on its first two indices and to the mode residual on its third leaves a scalar coefficient, which we call $a$. We now apply the Neural Tangent Hierarchy and set $a$ approximately as a positive constant. This closure allows us to analyitically investigate the dynamics. {{< footnote >}}Further empirical analysis has shown that $a$ evolves quite a bit, but qualitatively the results of the constant $a$ closure fit quite well. Expansions of $a$ in $K$ also seem promising. Using quadratic activation functions should also yield an analytical closure without approximations.{{< /footnote >}} Our canonical mode-wise equations become
+We now decompose into NTK Fourier modes and write the same equations for each Fourier direction {{< footnote >}}At initialization, one can explicitly compute the infinite width Neural Tangent Kernel, which then only depends on differences of inputs. By the convolution theorem, this Kernel is then diagonal in Fourier Space, which allows us to approximately track the evolution of each of the Fourier modes independently over time. Additionally, each Fourier mode (besides constant sectors) has equal weight at initialization with one-hot encoded inputs and outputs. This leads to the memorization solution at the start of the training, where all modes are used equally and allows us to focus on a single mode analysis, which will hold for all leaving an effective diagonal $K^{(2)}$.{{< /footnote >}}. Let $\Lambda$ be the eigenvalue of $K$ along a chosen Fourier vector $(a,b)$, and let $\sigma$ and $y$ be the residual and target components along that vector. Applying $K^{(2)}$ to the same vector on its first two indices and to the mode residual on its third leaves a scalar coefficient, which we call $a$. We now apply the Neural Tangent Hierarchy and set $a$ approximately as a positive constant. This closure allows us to analytically investigate the dynamics. {{< footnote >}}Further empirical analysis has shown that $a$ evolves quite a bit, but qualitatively the results of the constant $a$ closure fit quite well. Expansions of $a$ in $K$ also seem promising. Using quadratic activation functions should also yield an analytical closure without approximations.{{< /footnote >}} Our canonical mode-wise equations become
 
 <div class="math-display">
 \[
@@ -255,7 +255,7 @@ The second order equation retains the full two-state dynamics. It is useful for 
 
 #### Effective Adiabatic Approximation of Grokking
 
-The residual relaxes faster than the eigenvalue changes. {{< footnote >}}This assumption is partly given empirically, but qualitatively the results fit the observations very well.{{< /footnote >}}Setting $\dot\sigma\simeq0$ gives
+The residual relaxes faster than the eigenvalue changes. {{< footnote >}}This assumption is partly given empirically, but qualitatively the results fit the observations very well.{{< /footnote >}} Setting $\dot\sigma\simeq0$ gives
 
 <div class="math-display">
 \[
@@ -395,9 +395,9 @@ A second, nearly vertical boundary comes from the fast kernel ridge regression f
 
 Beyond $\lambda_{\rm fit}$, Weight Decay is too big even for the training fit. Between $\lambda_{\rm feature}$ and $\lambda_{\rm fit}$, the network can fit without sustaining the task modes. This is where memorization reaches a partly resolved forgetting/no-fitting region. Finally, discrete gradient descent requires the learning rate to remain below the edge of stability, approximately $\eta_{\rm cut}\simeq2/\alpha_{\max}$ for the largest effective curvature $\alpha_{\max}$. This adds the horizontal upper edge missing for approximating Gradient Flow.
 
-We test this against a single $p=23$ empiricial sweep. We cover an $84\times90$ grid in $(\eta,\lambda_W)$, with the learning rate running from $16$ to $1000$ and Weight Decay from $2\times10^{-7}$ to $10^{-4}$, both logarithmically spaced to observe the predicted linear Grokking boundary.{{< footnote >}}The comically large learning rates originate from averaging of the full batch regression loss producing small values.{{< /footnote >}} This gives us 7,560 runs of $T=24,000$ full-batch updates each.
+We test this against a single $p=23$ empirical sweep. We cover an $84\times90$ grid in $(\eta,\lambda_W)$, with the learning rate running from $16$ to $1000$ and Weight Decay from $2\times10^{-7}$ to $10^{-4}$, both logarithmically spaced to observe the predicted linear Grokking boundary.{{< footnote >}}The comically large learning rates originate from averaging of the full batch regression loss producing small values.{{< /footnote >}} This gives us 7,560 runs of $T=24,000$ full-batch updates each.
 
-Figure 5 shows the phase diagram and its **3.5 phases**. In the grokking phase, both training and validation accuracy exceed 90%. In memorization, only training accuracy does. At larger Weight Decay, some runs fit and then forget. The neighboring no-fitting label means that no fit was recorded. We therefore treat forgetting and no fitting as one partly resolved region rather than two firmly separated phases. We find remarkable agreeement between our linear adiabatic Grokking boundary and the empirically observed phase diagram. Interestingly, there appears to be a small grokking island at very high values of learning rates, which has an interesting training curves and should be investigated further. Both the u-shape and the linear grokking boundary fit very well. Larger time horizations would extend the grokking boundary further into the lower left corner of phase space. For a larger sweep, please view the Appendix.
+Figure 5 shows the phase diagram and its **3.5 phases**. In the grokking phase, both training and validation accuracy exceed 90%. In memorization, only training accuracy does. At larger Weight Decay, some runs fit and then forget. The neighboring no-fitting label means that no fit was recorded. We therefore treat forgetting and no fitting as one partly resolved region rather than two firmly separated phases. We find remarkable agreement between our linear adiabatic Grokking boundary and the empirically observed phase diagram. Interestingly, there appears to be a small grokking island at very high values of learning rates, which has interesting training curves and should be investigated further. Both the u-shape and the linear grokking boundary fit very well. Larger time horizons would extend the grokking boundary further into the lower left corner of phase space. For a larger sweep, please view the Appendix.
 
 <div class="phase-comparison">
   <figure class="grokking-figure">
@@ -426,7 +426,7 @@ Figure 5 shows the phase diagram and its **3.5 phases**. In the grokking phase, 
       <p class="phase-trajectory__caption" data-trajectory-caption aria-live="polite">At η ≈ 184 and λW ≈ 7.04×10⁻⁶, training fits first and validation follows after a short grokking delay.</p>
     </aside>
   </figure>
-  <p class="phase-comparison__caption"><strong>Figure 5.</strong> Predicted and observed phase structure, compared qualitatively. Yellow represents grokking, purple memorization, and the gray high-decay region denotes forgetting/no fitting. The empirical panel uses a lighter gray to distinguish observed forgetting from no fitting. The experimental panel contains the complete fixed split grid. Experimental <a href="#setup-b">Setup B </a>.</p>
+  <p class="phase-comparison__caption"><strong>Figure 5.</strong> Predicted and observed phase structure, compared qualitatively. Yellow represents grokking, purple memorization, and the gray high-decay region denotes forgetting/no fitting. The empirical panel uses a lighter gray to distinguish observed forgetting from no fitting. The experimental panel contains the complete fixed split grid. Experimental <a href="#setup-b">Setup B</a>.</p>
 </div>
 
 ### 2.4 Inducing Grokking Through Feature Transfer
@@ -441,9 +441,9 @@ L_{\rm NTK}
 \]
 </div>
 
-The encourages the new network to begin with stronger interactions along the target aligned directions. We extract the generalized NTK from a two-hidden-layer ReLU network with width 256. As a target we use a three-hidden layer network of width 128 trained on a different trainig-validation split. We activate the penalty only for the first 800 epochs to imitate initialization.
+This encourages the new network to begin with stronger interactions along the target aligned directions. We extract the generalized NTK from a two-hidden-layer ReLU network with width 256. As a target we use a three-hidden layer network of width 128 trained on a different training-validation split. We activate the penalty only for the first 800 epochs to imitate initialization.
 
-Across 50 different seeds, the biased networks generalizes earlier. Their validation loss drops during the short regularization period and remains below the baseline after the penalty is removed. Transferring $\bar K_{\rm gen}$ therefore supports the theoretical analysis.
+Across 50 different seeds, the biased networks generalize earlier. Their validation loss drops during the short regularization period and remains below the baseline after the penalty is removed. Transferring $\bar K_{\rm gen}$ therefore supports the theoretical analysis.
 
 <figure class="grokking-figure">
   <img src="../../images/grokking/ntk-regularization.png" alt="NTK-regularized networks generalize earlier than unregularized networks across 50 runs.">
@@ -452,7 +452,7 @@ Across 50 different seeds, the biased networks generalizes earlier. Their valida
 
 ## 3. Conclusion and Takeaways
 
-We conclude that Grokking in homogeneous neural networks is sparked via a regularizing pressure of Weight Decay and is a gradual process where the Neural Tangent Kernel aligns with the training labels over time. In our experimental setup the abrupt transition from a memorized to a generalized state is induced via a conjoint movement of all features related to generalization yielding a sigmoid like transition. This depends on the one-hot encoding of our inputs, as it forces the same initial condition on all Fourier Modes with no bias to larger or smaller wave lengths. This is in contrast to other tasks (Image classification with with CNNs), where inductive bias is helpful for generalization. Our analysis is also limited to algorithmic datasets. Grokking has however been observed in more general settings, where it might have a different origin. Our theoretical analysis is however independent of the exact group structure and could be extended to a more general theory of feature learning, where the canonical basis of the underlying task is less well known.
+We conclude that Grokking in homogeneous neural networks is sparked via a regularizing pressure of Weight Decay and is a gradual process where the Neural Tangent Kernel aligns with the training labels over time. In our experimental setup the abrupt transition from a memorized to a generalized state is induced via a conjoint movement of all features related to generalization yielding a sigmoid like transition. This depends on the one-hot encoding of our inputs, as it forces the same initial condition on all Fourier Modes with no bias to larger or smaller wave lengths. This is in contrast to other tasks (Image classification with CNNs), where inductive bias is helpful for generalization. Our analysis is also limited to algorithmic datasets. Grokking has however been observed in more general settings, where it might have a different origin. Our theoretical analysis is however independent of the exact group structure and could be extended to a more general theory of feature learning, where the canonical basis of the underlying task is less well known.
 
 To summarize in three points:
 
@@ -465,7 +465,7 @@ To summarize in three points:
 The phase sweep ran on NVIDIA A40 GPU slices.
 
 | Sweep | Runs | Epochs per run | GPU time |
-|---|---:|---:|---:|---:|---:|
+|---|---:|---:|---:|
 | $p=23$ phase diagram | 7,560 | 24,000 | 46 hours |
 
 ## References
@@ -535,5 +535,5 @@ The two differ mostly through choice of the loss. We found that regular regressi
 
 <figure class="grokking-figure grokking-figure--wide">
   <img src="../../images/grokking/phase-diagram-expanded.svg" alt="Expanded p=23 phase map covering learning rates from 0.16 to 100000 and weight decays from 2e-9 to 1e-2, with the main-text grid marked and the left edge of the grokking region fitted.">
-  <figcaption><strong>Figure A1.</strong> Extended phase diagram. One can observe that the grokking island above the stability threshold extends further to the left and also produces a band.{{< footnote >}} This region could be investigated in further research and might depend on second order approximations of Gradient Flow.{{< /footnote >}}The white curve fits the left edge as η ∝ λW<sup>−α</sup> with α = 1.07. <a href="#setup-b">Setup B</a>.</figcaption>
+  <figcaption><strong>Figure A1.</strong> Extended phase diagram. One can observe that the grokking island above the stability threshold extends further to the left and also produces a band.{{< footnote >}} This region could be investigated in further research and might depend on second order approximations of Gradient Flow.{{< /footnote >}} The white curve fits the left edge as η ∝ λW<sup>−α</sup> with α = 1.07. <a href="#setup-b">Setup B</a>.</figcaption>
 </figure>
