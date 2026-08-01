@@ -477,8 +477,6 @@ The phase sweep ran on NVIDIA A40 GPU slices.
 5. <span id="ref-liu"></span>Ziming Liu et al. [*Towards Understanding Grokking: An Effective Theory of Representation Learning*](https://arxiv.org/abs/2205.10343), 2022.
 6. <span id="ref-jacot"></span>Arthur Jacot, Franck Gabriel, and Clément Hongler. [*Neural Tangent Kernel: Convergence and Generalization in Neural Networks*](https://arxiv.org/abs/1806.07572), 2018.
 7. <span id="ref-huang"></span>Jiaoyang Huang and Horng-Tzer Yau. [*Dynamics of Deep Neural Networks and Neural Tangent Hierarchy*](https://arxiv.org/abs/1909.08156), 2020.
-8. <span id="ref-thesis"></span>Lenz Pracher. [*Master Thesis: source and experiments*](https://github.com/lenzpracher/Master-Thesis---Lenz-Pracher).
-
 ---
 
 ## Cite This Work
