@@ -130,6 +130,7 @@
     .profile-pic img {
       width: 100px;
       height: 100px;
+      object-fit: cover;
       border: 2px solid #6eb5ff;
       border-radius: 8px;
       filter: brightness(0.9);
@@ -274,7 +275,7 @@
       <h1>Lenz Pracher</h1>
       
       <div class="profile-pic">
-        <img src="https://avatars.githubusercontent.com/u/181533472?v=4" alt="Profile">
+        <img src="{{ "images/profile.jpg" | relURL }}" alt="Lenz Pracher">
       </div>
       
       <p>I like working on foundational problems in machine learning, usually by looking for the simplest argument that explains what is going on. If you are thinking about something in that direction and want to collaborate, feel free to <a href="#contact">reach out</a>.</p>
