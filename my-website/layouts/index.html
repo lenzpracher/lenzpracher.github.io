@@ -18,7 +18,8 @@
       color: inherit;
     }
     body {
-      font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+      font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', sans-serif;
+      font-weight: 300;
       background: #1a1a1a;
       color: #e0e0e0;
       line-height: 1.5;
@@ -42,11 +43,9 @@
     .terminal {
       background: rgba(30, 30, 30, 0.85);
       backdrop-filter: blur(8px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 12px;
+      border-radius: 16px;
       margin: 40px;
-      padding: 30px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      padding: 40px;
       position: relative;
       z-index: 2;
       max-width: 800px;
@@ -60,6 +59,8 @@
       margin-bottom: 30px;
       font-size: 0.85rem;
       display: flex;
+      flex-wrap: wrap;
+      row-gap: 12px;
       align-items: center;
     }
     
@@ -131,9 +132,7 @@
       width: 100px;
       height: 100px;
       object-fit: cover;
-      border: 2px solid #6eb5ff;
-      border-radius: 8px;
-      filter: brightness(0.9);
+      border-radius: 50%;
     }
     
     p {
@@ -143,14 +142,11 @@
     }
     
     p a {
-      color: #ffffff;
-      text-decoration: underline;
-      transition: all 0.3s ease;
+      color: #9ccbff;
     }
     
     p a:hover {
-      color: #6eb5ff;
-      text-shadow: 0 0 5px #6eb5ff;
+      text-decoration: underline;
     }
     
     .prompt {
@@ -167,20 +163,12 @@
     }
     
     .centered a {
-      margin-right: 15px;
-      color: #6eb5ff;
-      text-decoration: none;
-      padding: 8px 16px;
-      border: 1px solid #404040;
-      border-radius: 6px;
-      transition: all 0.3s ease;
-      font-size: 0.9rem;
+      margin-right: 20px;
+      color: #9ccbff;
     }
     
     .centered a:hover {
-      background: rgba(110, 181, 255, 0.1);
-      border-color: #6eb5ff;
-      color: #ffffff;
+      text-decoration: underline;
     }
     
     hr {
@@ -243,6 +231,9 @@
       h1 {
         font-size: 2rem;
       }
+      #fish-stats {
+        font-size: 0.7rem;
+      }
       .profile-pic img {
         width: 150px;
         height: 150px;
@@ -256,7 +247,6 @@
   <div class="terminal" id="info-card">
     <div class="terminal-header">
       <span style="color: #888; display: flex; align-items: center; gap: 15px;">
-        LENZ PRACHER
         <a href="https://ssh.alderan.dev/" 
            style="color: #6b7280; text-decoration: none; padding: 4px 12px; border: 1px solid #6b7280; border-radius: 4px; font-size: 12px; transition: all 0.2s ease; background: transparent;"
            onmouseover="this.style.backgroundColor='#6b7280'; this.style.color='#1a1a1a';"
@@ -280,12 +270,12 @@
       
       <p>I am currently working on training dynamics in Reinforcement Learning. If you are thinking about something in that direction and want to collaborate, feel free to <a href="#contact">reach out</a>.</p>
 
-      <p>I am a PhD student at <a href="https://appliedphysics.stanford.edu/" target="_blank">Stanford</a>, grateful to be advised by <a href="https://ganguli-gang.stanford.edu/surya.html" target="_blank">Surya Ganguli</a>. I recently finished my <a href="https://www.theorie.physik.uni-muenchen.de/TMP/" target="_blank">M.Sc. in Theoretical and Mathematical Physics</a> at TUM/LMU, working on <a href="https://www.physicsoflearning.org/" target="_blank">Physics of (Machine) Learning</a> in the <a href="https://www.theorie.physik.uni-muenchen.de/lsfrey/group_rulands/index.html" target="_blank">Rulands Group</a>. Before that I was a working student and intern at <a href="https://www.quantco.com/" target="_blank">Quantco</a>, spent time as a visiting researcher at <a href="https://www.math.harvard.edu/" target="_blank">Harvard Mathematics</a> and at the <a href="https://sail.ist.hokudai.ac.jp/en/publications/papers.html" target="_blank">Hokkaido University Department of Information Science and Technology</a>, was a visiting student at <a href="https://www.kyoto-u.ac.jp/en" target="_blank">Kyoto University</a>, and did my <a href="https://www.tum.de/en/studies/degree-programs/detail/physics-bachelor-of-science-bsc" target="_blank">B.Sc. in Physics</a> at TUM.</p>
+      <p>I am a PhD student at <a href="https://appliedphysics.stanford.edu/" target="_blank">Stanford</a>, advised by <a href="https://ganguli-gang.stanford.edu/surya.html" target="_blank">Surya Ganguli</a>. I recently finished my <a href="https://www.theorie.physik.uni-muenchen.de/TMP/" target="_blank">M.Sc. in Theoretical and Mathematical Physics</a> at TUM/LMU, working on <a href="https://www.physicsoflearning.org/" target="_blank">Physics of (Machine) Learning</a> in the <a href="https://www.theorie.physik.uni-muenchen.de/lsfrey/group_rulands/index.html" target="_blank">Rulands Group</a>. Before that I was a working student and intern at <a href="https://www.quantco.com/" target="_blank">Quantco</a>, spent time as a visiting researcher at <a href="https://www.math.harvard.edu/" target="_blank">Harvard Mathematics</a> and at the <a href="https://sail.ist.hokudai.ac.jp/en/publications/papers.html" target="_blank">Hokkaido University Department of Information Science and Technology</a>, was a visiting student at <a href="https://www.kyoto-u.ac.jp/en" target="_blank">Kyoto University</a>, and did my <a href="https://www.tum.de/en/studies/degree-programs/detail/physics-bachelor-of-science-bsc" target="_blank">B.Sc. in Physics</a> at TUM.</p>
       
       <div class="centered">
-        <a href="https://github.com/lenzpracher" target="_blank">github</a>
-        <a href="https://www.linkedin.com/in/lenz-pracher-4aa038279/" target="_blank">linkedin</a>
-        <a href="https://scholar.google.com/citations?user=_4qxtb0AAAAJ&hl=en" target="_blank">google scholar</a>
+        <a href="https://github.com/lenzpracher" target="_blank">GitHub</a>
+        <a href="https://www.linkedin.com/in/lenz-pracher-4aa038279/" target="_blank">LinkedIn</a>
+        <a href="https://scholar.google.com/citations?user=_4qxtb0AAAAJ&hl=en" target="_blank">Google Scholar</a>
       </div>
     </section>
     
@@ -343,7 +333,7 @@
   </div>
   <footer id="footer">
     <hr>
-    <p>&copy; Lenz Pracher | <a href="/impressum" style="color: #666; text-decoration: underline;">Impressum</a></p>
+    <p>&copy; Lenz Pracher</p>
   </footer>
 
   <script>
@@ -1003,7 +993,7 @@
         this.speedHistory = [];
         this.cohesionHistory = [];
         this.packSizeHistory = [];
-        this.maxHistoryLength = 60; // 1 second at 60fps
+        this.maxHistoryLength = 4; // 2 seconds, sampled every 30 frames
         
         this.setupCanvas();
         this.initializeFishes();
@@ -1054,6 +1044,12 @@
         });
         
         window.addEventListener('resize', () => {
+          // Mobile browsers change the height while scrolling; only restart on width changes
+          if (window.innerWidth === this.width) {
+            this.height = window.innerHeight;
+            this.setupCanvas();
+            return;
+          }
           this.width = window.innerWidth;
           this.height = window.innerHeight;
           this.setupCanvas();
@@ -1157,17 +1153,42 @@
         }
       }
       
+      // Bucket fish into cells as large as the biggest interaction radius,
+      // so each fish only checks the 3x3 cells around it
+      buildGrid() {
+        this.grid = new Map();
+        for (let fish of this.fishes) {
+          const key = Math.floor(fish.x / 160) + ',' + Math.floor(fish.y / 160);
+          if (!this.grid.has(key)) this.grid.set(key, []);
+          this.grid.get(key).push(fish);
+        }
+      }
+      
+      neighbors(fish) {
+        const cx = Math.floor(fish.x / 160);
+        const cy = Math.floor(fish.y / 160);
+        const result = [];
+        for (let dx = -1; dx <= 1; dx++) {
+          for (let dy = -1; dy <= 1; dy++) {
+            const cell = this.grid.get((cx + dx) + ',' + (cy + dy));
+            if (cell) result.push(...cell);
+          }
+        }
+        return result;
+      }
+      
       animate() {
         this.ctx.clearRect(0, 0, this.width, this.height);
+        this.buildGrid();
         
         // Update and draw all fishes
         for (let fish of this.fishes) {
-          fish.update(this.fishes, this.mouseX, this.mouseY);
+          fish.update(this.neighbors(fish), this.mouseX, this.mouseY);
           fish.draw(this.ctx);
         }
         
         // Calculate dynamics less frequently for performance
-        if (this.frameCount % 3 === 0) {
+        if (this.frameCount % 30 === 0) {
           this.calculateDynamics();
         }
         this.updateStatusDisplay();
@@ -1182,16 +1203,9 @@
     
     // Toggle info card visibility
     function toggleInfoCard() {
-      const infoCard = document.getElementById('info-card');
-      const footer = document.getElementById('footer');
-      
-      if (infoCard.style.display === 'none') {
-        infoCard.style.display = 'block';
-        footer.style.display = 'block';
-      } else {
-        infoCard.style.display = 'none';
-        footer.style.display = 'none';
-      }
+      const content = document.querySelectorAll('#info-card > section, #info-card > hr, #footer');
+      const hide = content[0].style.display !== 'none';
+      content.forEach((el) => { el.style.display = hide ? 'none' : ''; });
     }
     
     // Add visual feedback for button clicks
